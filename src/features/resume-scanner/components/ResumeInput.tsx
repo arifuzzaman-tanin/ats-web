@@ -58,7 +58,7 @@ export function ResumeInput({ error }: ResumeInputProps) {
         ) : (
           <ResumeTextInput value={resumeText} onChange={setResumeText} />
         )}
-        <ResumeInputToggle mode={mode} onChange={setMode} />
+        {uploadedFileName ? null : <ResumeInputToggle mode={mode} onChange={setMode} />}
       </div>
       {fileError ? <p className="field-error">{fileError}</p> : null}
       {error ? <p className="field-error">{error}</p> : null}

@@ -1,4 +1,4 @@
-import { Copy, FilePlus2 } from 'lucide-react'
+import { Copy, FilePlus2, Info } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Button } from '../../../components/ui/Button/Button'
 import { Checkbox } from '../../../components/ui/Checkbox/Checkbox'
@@ -60,8 +60,8 @@ export function ResumePrompt({ result }: ResumePromptProps) {
         <div>
           <h2>Generate a Resume Improvement Prompt</h2>
           <p>
-            Get a ready-to-use prompt to improve your resume with the missing skills and job
-            requirements.
+            Get a ready-to-use prompt for ChatGPT to create a new resume with the missing skills and
+            improvements.
           </p>
         </div>
       </div>
@@ -70,28 +70,33 @@ export function ResumePrompt({ result }: ResumePromptProps) {
         checked={includeQuantitativeAchievements}
         onChange={(event) => setIncludeQuantitativeAchievements(event.target.checked)}
         label="Include quantitative achievements"
-        description="Add instructions to include measurable results where appropriate."
+        description='Add instructions to include measurable results (e.g., "improved performance by 40%", "led a team of 5", etc.).'
       />
 
-      <Button
-        type="button"
-        variant="secondary"
-        icon={<Copy size={20} />}
-        onClick={() => void copyPrompt()}
-      >
-        Copy Prompt
-      </Button>
-      <span className="copy-feedback" aria-live="polite">
-        {copied ? 'Copied' : ''}
-      </span>
+      <div className="prompt-actions">
+        <Button
+          type="button"
+          variant="secondary"
+          icon={<Copy size={20} />}
+          onClick={() => void copyPrompt()}
+        >
+          Copy Prompt
+        </Button>
+        <span className="copy-feedback" aria-live="polite">
+          {copied ? 'Copied' : ''}
+        </span>
+      </div>
 
       <div className="usage-note">
-        <h3>How to use this prompt?</h3>
+        <div className="usage-note__title">
+          <Info size={18} />
+          <h3>How to use this prompt?</h3>
+        </div>
         <ol>
           <li>Click "Copy Prompt" to copy the detailed prompt.</li>
           <li>
-            Paste it into an AI tool such as ChatGPT, Gemini, Claude, or another LLM to generate an
-            improved resume.
+            Paste it in any AI tool like ChatGPT, Gemini, or Claude and generate your improved
+            resume.
           </li>
         </ol>
       </div>

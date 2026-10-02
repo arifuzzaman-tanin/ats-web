@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FileText, Sparkles } from 'lucide-react'
 import { Card } from '../../../components/ui/Card/Card'
 import { Tabs, type TabItem } from '../../../components/ui/Tabs/Tabs'
 import type { ExtractSkillsResponse } from '../../../types/resume'
@@ -14,12 +15,14 @@ export function ResumeImprovementTabs({ result }: ResumeImprovementTabsProps) {
   const tabs: TabItem[] = [
     {
       id: 'resume-prompt',
-      label: 'Resume Prompt',
+      label: 'Prompt Builder',
+      icon: <FileText size={22} />,
       panel: <ResumePrompt result={result} />,
     },
     {
       id: 'ai-resume-optimization',
-      label: 'AI Resume Optimization',
+      label: 'AI Resume Generation',
+      icon: <Sparkles size={22} />,
       panel: <AIResumeOptimization result={result} />,
     },
   ]

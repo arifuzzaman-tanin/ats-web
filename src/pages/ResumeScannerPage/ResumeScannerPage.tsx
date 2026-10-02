@@ -53,10 +53,27 @@ export function ResumeScannerPage() {
 
       <form className="scanner-form" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Card className="scanner-card">
-          <div className="scanner-card__grid">
+          <div className="scanner-card__grid" aria-busy={analyzeMutation.isPending}>
             <ResumeInput error={errors.resumeText?.message} />
             <JobDescriptionInput error={errors.jobDescription?.message} />
           </div>
+          {analyzeMutation.isPending ? (
+            <div className="scan-loader" role="status" aria-live="polite">
+              <div className="scan-loader__visual" aria-hidden="true">
+                <div className="scan-loader__document">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="scan-loader__beam" />
+              </div>
+              <div className="scan-loader__copy">
+                <strong>Scanning your resume</strong>
+                <span>Matching skills and job requirements...</span>
+              </div>
+            </div>
+          ) : null}
           <div className="scanner-card__actions">
             <ScanResumeButton isPending={analyzeMutation.isPending} />
           </div>

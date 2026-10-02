@@ -28,7 +28,7 @@ export function ResumeAnalysisPage() {
       <div className="analysis-layout">
         <div className="analysis-layout__left">
           <Card className="score-card">
-            <MatchScore score={result.resume_score_in_percentage} />
+            <MatchScore score={result.resume_score_in_percentage} status={result.resume_status} />
             <ResumeStatusSummary status={result.resume_status} />
           </Card>
           <ResumeImprovementTabs result={result} />

@@ -1,5 +1,13 @@
 import type { ResumeStatus } from '../../../types/resume'
 
+export const RESUME_STATUS_COLORS: Record<ResumeStatus, string> = {
+  'Below Average': '#ef4444',
+  Average: '#f59e0b',
+  Good: '#10b981',
+  Excellent: '#2563eb',
+  Best: '#7c3aed',
+}
+
 export const RESUME_STATUSES: ResumeStatus[] = [
   'Below Average',
   'Average',

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 export interface TabItem {
   id: string
   label: string
+  icon?: ReactNode
   panel: ReactNode
 }
 
@@ -29,6 +30,7 @@ export function Tabs({ tabs, activeTab, onChange }: TabsProps) {
             className="tabs__trigger"
             onClick={() => onChange(tab.id)}
           >
+            {tab.icon ? <span className="tabs__icon">{tab.icon}</span> : null}
             {tab.label}
           </button>
         ))}

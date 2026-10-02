@@ -19,12 +19,22 @@
 }
 
 .scanner-card {
+  position: relative;
   padding: clamp(1.4rem, 2.2vw, 2.75rem);
 
   &__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
     gap: clamp(1.6rem, 2.5vw, 2.7rem);
+
+    &[aria-busy='true'] {
+      pointer-events: none;
+      filter: blur(1px);
+      opacity: 0.36;
+      transition:
+        filter 180ms ease,
+        opacity 180ms ease;
+    }
   }
 
   &__actions {
@@ -94,6 +104,17 @@
   color: $color-muted;
   cursor: pointer;
 
+  &--selected {
+    border-style: solid;
+    border-color: $color-border;
+    justify-content: center;
+    align-items: stretch;
+    padding: clamp(1.1rem, 3vw, 2rem);
+    background: #fff;
+    color: $color-text;
+    cursor: default;
+  }
+
   &__icon {
     width: 120px;
     height: 120px;
@@ -115,14 +136,69 @@
     font-size: 0.9375rem;
   }
 
-  &__file {
-    max-width: min(100%, 30rem);
+  &__selected-card {
+    width: min(100%, 34rem);
+    min-height: 112px;
+    margin: 0 auto;
+    border: 1px solid rgba(8, 119, 242, 0.16);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem;
+    text-align: left;
+  }
+
+  &__selected-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: #eaf3ff;
+    color: $color-primary;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    &--pdf {
+      background: #fff1f2;
+      color: #b42318;
+    }
+
+    &--word {
+      background: #eaf3ff;
+      color: #185abd;
+    }
+
+    &--text,
+    &--other {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+  }
+
+  &__format {
+    font-size: 9px;
+    line-height: 12px;
+    font-weight: 700;
+  }
+
+  &__selected-copy {
+    min-width: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  &__selected-label {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    color: $color-text;
-    font-size: 1rem;
-    font-weight: 500;
+    gap: 0.4rem;
+    color: $color-success;
+    font-size: 0.875rem;
+    font-weight: 700;
   }
 
   &__file-name {
@@ -130,15 +206,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: $color-text;
+    font-size: 1.02rem;
+    font-weight: 700;
   }
 
   &__clear {
-    width: 32px;
-    height: 32px;
-    border: 1px solid $color-border;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(8, 119, 242, 0.18);
     border-radius: 999px;
     background: #fff;
-    color: $color-muted;
+    color: $color-primary;
     display: inline-grid;
     place-items: center;
     flex: 0 0 auto;
@@ -150,9 +229,9 @@
 
     &:hover,
     &:focus-visible {
-      border-color: $color-primary;
-      color: $color-primary;
-      box-shadow: 0 0 0 3px rgba(8, 119, 242, 0.12);
+      border-color: rgba(255, 31, 36, 0.26);
+      color: $color-error;
+      box-shadow: 0 0 0 4px rgba(255, 31, 36, 0.1);
       outline: none;
     }
   }
@@ -212,6 +291,103 @@
   margin-top: 1.25rem;
 }
 
+.scan-loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1.2rem;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(2px);
+  z-index: 2;
+  pointer-events: none;
+
+  &__visual {
+    position: relative;
+    width: min(210px, 58vw);
+    height: 250px;
+    display: grid;
+    place-items: center;
+  }
+
+  &__document {
+    width: 150px;
+    height: 198px;
+    border: 1px solid rgba(8, 119, 242, 0.18);
+    border-radius: 16px;
+    background:
+      linear-gradient(135deg, transparent 0 22px, rgba(8, 119, 242, 0.1) 23px 44px, transparent 45px),
+      #fff;
+    box-shadow:
+      0 20px 38px rgba(8, 119, 242, 0.14),
+      0 0 0 10px rgba(232, 242, 255, 0.82);
+    display: grid;
+    align-content: center;
+    gap: 15px;
+    padding: 0 24px;
+    animation: scan-document-pulse 1800ms ease-in-out infinite;
+
+    span {
+      height: 8px;
+      border-radius: 999px;
+      background: #dce9fb;
+
+      &:nth-child(1) {
+        width: 72%;
+      }
+
+      &:nth-child(2) {
+        width: 100%;
+      }
+
+      &:nth-child(3) {
+        width: 86%;
+      }
+
+      &:nth-child(4) {
+        width: 58%;
+      }
+    }
+  }
+
+  &__beam {
+    position: absolute;
+    top: 30px;
+    left: 12px;
+    right: 12px;
+    height: 42px;
+    border-radius: 999px;
+    background: linear-gradient(
+      180deg,
+      rgba(18, 183, 106, 0),
+      rgba(18, 183, 106, 0.42) 45%,
+      rgba(8, 119, 242, 0)
+    );
+    box-shadow:
+      0 0 28px rgba(18, 183, 106, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    animation: scan-beam 1600ms ease-in-out infinite;
+  }
+
+  &__copy {
+    display: grid;
+    gap: 0.35rem;
+    text-align: center;
+
+    strong {
+      color: $color-navy;
+      font-size: 1.05rem;
+    }
+
+    span {
+      color: $color-muted;
+      font-size: 0.9375rem;
+    }
+  }
+}
+
 .scan-button {
   min-width: 112px;
   min-height: 44px;
@@ -244,6 +420,42 @@
 .scanner-page .field-error,
 .scanner-page .form-error {
   font-size: 0.9375rem;
+}
+
+@keyframes scan-beam {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  12%,
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(148px);
+    opacity: 0;
+  }
+}
+
+@keyframes scan-document-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-loader__document,
+  .scan-loader__beam {
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+  }
 }
 
 @media (max-width: $tablet) {
@@ -332,6 +544,10 @@
     padding: clamp(1rem, 2.6vh, 2rem);
   }
 
+  .resume-upload--selected {
+    padding: clamp(0.8rem, 2.2vh, 1.4rem);
+  }
+
   .resume-upload__icon {
     width: clamp(76px, 13vh, 120px);
     height: clamp(76px, 13vh, 120px);
@@ -361,5 +577,23 @@
 
   .resume-toggle {
     width: calc(100% - 1.5rem);
+  }
+
+  .resume-upload__selected-card {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.85rem;
+    padding: 0.95rem;
+  }
+
+  .resume-upload__selected-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+  }
+
+  .resume-upload__clear {
+    grid-column: 1 / -1;
+    width: 100%;
+    border-radius: 10px;
   }
 }

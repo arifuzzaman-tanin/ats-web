@@ -1,5 +1,6 @@
+import type { CSSProperties } from 'react'
 import type { ResumeStatus } from '../../../types/resume'
-import { RESUME_STATUSES } from '../utils/getResumeStatus'
+import { RESUME_STATUSES, RESUME_STATUS_COLORS } from '../utils/getResumeStatus'
 
 interface ResumeStatusStepperProps {
   status: ResumeStatus
@@ -9,7 +10,11 @@ export function ResumeStatusStepper({ status }: ResumeStatusStepperProps) {
   const currentIndex = RESUME_STATUSES.indexOf(status)
 
   return (
-    <div className="status-stepper" aria-label={`Resume status: ${status}`}>
+    <div
+      className="status-stepper"
+      style={{ '--status-color': RESUME_STATUS_COLORS[status] } as CSSProperties}
+      aria-label={`Resume status: ${status}`}
+    >
       {RESUME_STATUSES.map((item, index) => {
         const isActive = index <= currentIndex
         const isCurrent = index === currentIndex
