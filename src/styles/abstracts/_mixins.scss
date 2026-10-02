@@ -1,0 +1,4 @@
+@mixin focus-ring {
+  outline: 3px solid rgba(8, 119, 242, 0.25);
+  outline-offset: 2px;
+}
