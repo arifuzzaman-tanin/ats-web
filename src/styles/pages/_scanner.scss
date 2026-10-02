@@ -14,6 +14,10 @@
   }
 }
 
+.scanner-form {
+  min-height: 0;
+}
+
 .scanner-card {
   padding: clamp(1.4rem, 2.2vw, 2.75rem);
 
@@ -21,6 +25,12 @@
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
     gap: clamp(1.6rem, 2.5vw, 2.7rem);
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
   }
 }
 
@@ -104,6 +114,48 @@
     margin-top: 0.35rem;
     font-size: 0.9375rem;
   }
+
+  &__file {
+    max-width: min(100%, 30rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $color-text;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  &__file-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__clear {
+    width: 32px;
+    height: 32px;
+    border: 1px solid $color-border;
+    border-radius: 999px;
+    background: #fff;
+    color: $color-muted;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    cursor: pointer;
+    transition:
+      border-color 0.16s ease,
+      color 0.16s ease,
+      box-shadow 0.16s ease;
+
+    &:hover,
+    &:focus-visible {
+      border-color: $color-primary;
+      color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(8, 119, 242, 0.12);
+      outline: none;
+    }
+  }
 }
 
 .resume-textarea {
@@ -112,6 +164,7 @@
   color: $color-text;
   font-size: 1rem;
   line-height: 1.5;
+  overflow: auto;
 
   &::placeholder {
     color: #7582ad;
@@ -127,55 +180,56 @@
   left: 50%;
   bottom: 2.45rem;
   transform: translateX(-50%);
-  width: min(460px, calc(100% - 3rem));
+  width: min(230px, calc(100% - 3rem));
   height: 70px;
   border: 1px solid $color-border;
   border-radius: 999px;
   background: #f9fbff;
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
+  display: flex;
   align-items: center;
   padding: 0.45rem;
   box-shadow: inset 0 2px 9px rgba(22, 65, 130, 0.04);
 
   &__item {
+    width: 100%;
     height: 100%;
     border: 0;
     border-radius: 999px;
-    background: transparent;
-    color: $color-muted;
+    background: #edf4ff;
+    color: $color-primary;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
     font-weight: 500;
     font-size: 0.9375rem;
-
-    &[aria-selected='true'] {
-      color: $color-primary;
-      background: #edf4ff;
-    }
-  }
-
-  &__divider {
-    width: 1px;
-    height: 32px;
-    background: $color-border;
   }
 }
 
 .scanner-actions {
   display: grid;
   justify-items: center;
-  gap: 1.35rem;
-  margin-top: 2rem;
+  margin-top: 1.25rem;
 }
 
 .scan-button {
-  min-width: 235px;
-  min-height: 66px;
-  font-size: 1rem;
+  min-width: 112px;
+  min-height: 44px;
+  padding: 0.62rem 1.15rem;
+  font-size: 0.9375rem;
   font-weight: 700;
+
+  > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    white-space: nowrap;
+  }
+
+  svg,
+  .spinner {
+    flex-shrink: 0;
+  }
 }
 
 .privacy-note {
@@ -195,6 +249,107 @@
 @media (max-width: $tablet) {
   .scanner-card__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: ($tablet + 1px)) {
+  .scanner-page {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-top: clamp(0.6rem, 1.6vh, 1.1rem);
+    padding-bottom: clamp(0.75rem, 1.8vh, 1.4rem);
+
+    .page-heading {
+      flex: 0 0 auto;
+      margin-bottom: clamp(0.7rem, 1.8vh, 1.35rem);
+    }
+
+    .page-heading h1 {
+      font-size: clamp(1.45rem, 3.1vh, 2.25rem);
+      line-height: 1.2;
+    }
+  }
+
+  .scanner-form {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scanner-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1rem, 2.6vh, 2.1rem);
+  }
+
+  .scanner-card__grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: clamp(1rem, 2.4vh, 2.7rem);
+  }
+
+  .scanner-card__actions {
+    flex: 0 0 auto;
+    margin-top: clamp(0.7rem, 1.7vh, 1.25rem);
+  }
+
+  .input-section {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-section__heading {
+    flex: 0 0 auto;
+    min-height: clamp(46px, 7vh, 64px);
+    margin-bottom: clamp(0.65rem, 1.8vh, 1.55rem);
+    gap: clamp(0.8rem, 2vh, 1.45rem);
+  }
+
+  .input-section__icon {
+    width: clamp(48px, 7vh, 66px);
+    height: clamp(48px, 7vh, 66px);
+  }
+
+  .resume-input-shell {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+  }
+
+  .resume-upload,
+  .resume-textarea {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .resume-upload {
+    padding: clamp(1rem, 2.6vh, 2rem);
+  }
+
+  .resume-upload__icon {
+    width: clamp(76px, 13vh, 120px);
+    height: clamp(76px, 13vh, 120px);
+    margin-bottom: clamp(0.55rem, 1.6vh, 1rem);
+  }
+
+  .resume-toggle {
+    bottom: clamp(1rem, 3vh, 2.45rem);
+    height: clamp(58px, 7.5vh, 70px);
+  }
+
+  .scan-button {
+    min-height: clamp(40px, 5vh, 44px);
+  }
+
+  .scanner-actions {
+    flex: 0 0 auto;
+    margin-top: clamp(0.6rem, 1.7vh, 1.25rem);
   }
 }
 

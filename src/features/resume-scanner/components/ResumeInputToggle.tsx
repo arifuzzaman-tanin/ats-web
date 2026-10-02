@@ -7,28 +7,20 @@ interface ResumeInputToggleProps {
 }
 
 export function ResumeInputToggle({ mode, onChange }: ResumeInputToggleProps) {
+  const isUploadMode = mode === 'upload'
+  const nextMode = isUploadMode ? 'paste' : 'upload'
+  const label = isUploadMode ? 'Paste text' : 'Upload resume'
+  const Icon = isUploadMode ? ClipboardList : UploadCloud
+
   return (
-    <div className="resume-toggle" role="tablist" aria-label="Resume input method">
+    <div className="resume-toggle">
       <button
         type="button"
-        role="tab"
-        aria-selected={mode === 'upload'}
         className="resume-toggle__item"
-        onClick={() => onChange('upload')}
+        onClick={() => onChange(nextMode)}
       >
-        <UploadCloud size={18} />
-        Upload
-      </button>
-      <span className="resume-toggle__divider" />
-      <button
-        type="button"
-        role="tab"
-        aria-selected={mode === 'paste'}
-        className="resume-toggle__item"
-        onClick={() => onChange('paste')}
-      >
-        <ClipboardList size={18} />
-        Paste text
+        <Icon size={18} />
+        {label}
       </button>
     </div>
   )

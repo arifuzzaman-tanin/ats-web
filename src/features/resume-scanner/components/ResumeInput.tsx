@@ -33,6 +33,13 @@ export function ResumeInput({ error }: ResumeInputProps) {
     }
   }
 
+  const handleClearFile = () => {
+    setFileError('')
+    setUploadedFileName(undefined)
+    setUploadedFileMetadata(undefined)
+    setResumeText('')
+  }
+
   return (
     <section className="input-section" aria-labelledby="resume-input-title">
       <div className="input-section__heading">
@@ -43,7 +50,11 @@ export function ResumeInput({ error }: ResumeInputProps) {
       </div>
       <div className="resume-input-shell">
         {mode === 'upload' ? (
-          <ResumeUpload fileName={uploadedFileName} onFileSelect={handleFileSelect} />
+          <ResumeUpload
+            fileName={uploadedFileName}
+            onFileSelect={handleFileSelect}
+            onClearFile={handleClearFile}
+          />
         ) : (
           <ResumeTextInput value={resumeText} onChange={setResumeText} />
         )}

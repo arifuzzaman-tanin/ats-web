@@ -1,18 +1,29 @@
-import { CloudUpload } from 'lucide-react'
-import { useRef, type DragEvent } from 'react'
+import { CloudUpload, X } from 'lucide-react'
+import { useRef, type DragEvent, type KeyboardEvent, type MouseEvent } from 'react'
 
 interface ResumeUploadProps {
   fileName?: string
   onFileSelect: (file: File) => void
+  onClearFile: () => void
 }
 
-export function ResumeUpload({ fileName, onFileSelect }: ResumeUploadProps) {
+export function ResumeUpload({ fileName, onFileSelect, onClearFile }: ResumeUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const file = event.dataTransfer.files.item(0)
     if (file) onFileSelect(file)
+  }
+
+  const handleClearFile = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    if (inputRef.current) inputRef.current.value = ''
+    onClearFile()
+  }
+
+  const stopClearFileKeydown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
   }
 
   return (
@@ -41,12 +52,25 @@ export function ResumeUpload({ fileName, onFileSelect }: ResumeUploadProps) {
       <div className="resume-upload__icon">
         <CloudUpload size={54} strokeWidth={1.7} />
       </div>
-      <p className="resume-upload__title">
-        {fileName ? fileName : 'Drag and drop your resume here'}
-      </p>
-      <p className="resume-upload__meta">
-        {fileName ? 'File selected' : 'or click anywhere to choose a file'}
-      </p>
+      {fileName ? (
+        <div className="resume-upload__file">
+          <span className="resume-upload__file-name">{fileName}</span>
+          <button
+            type="button"
+            className="resume-upload__clear"
+            aria-label="Remove uploaded resume"
+            onClick={handleClearFile}
+            onKeyDown={stopClearFileKeydown}
+          >
+            <X size={18} strokeWidth={2.2} />
+          </button>
+        </div>
+      ) : (
+        <>
+          <p className="resume-upload__title">Drag and drop your resume here</p>
+          <p className="resume-upload__meta">or click anywhere to choose a file</p>
+        </>
+      )}
     </div>
   )
 }

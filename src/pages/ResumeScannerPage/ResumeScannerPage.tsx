@@ -57,6 +57,9 @@ export function ResumeScannerPage() {
             <ResumeInput error={errors.resumeText?.message} />
             <JobDescriptionInput error={errors.jobDescription?.message} />
           </div>
+          <div className="scanner-card__actions">
+            <ScanResumeButton isPending={analyzeMutation.isPending} />
+          </div>
         </Card>
 
         {analyzeMutation.error ? (
@@ -68,7 +71,6 @@ export function ResumeScannerPage() {
         ) : null}
 
         <div className="scanner-actions">
-          <ScanResumeButton isPending={analyzeMutation.isPending} />
           <p className="privacy-note">
             <LockKeyhole size={17} />
             Your files are only used for this scan and are not stored.
