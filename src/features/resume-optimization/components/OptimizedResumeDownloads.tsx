@@ -1,9 +1,9 @@
-import { Download } from 'lucide-react'
+import { Download, FileText, Info } from 'lucide-react'
 import { useState } from 'react'
 import { resumeExportService } from '../services/resumeExportService'
 
 interface OptimizedResumeDownloadsProps {
-  content: string
+  content?: string
 }
 
 function downloadBlob(blob: Blob, fileName: string) {
@@ -17,8 +17,10 @@ function downloadBlob(blob: Blob, fileName: string) {
 
 export function OptimizedResumeDownloads({ content }: OptimizedResumeDownloadsProps) {
   const [error, setError] = useState('')
+  const isReady = Boolean(content)
 
   const handleExport = async (type: 'docx' | 'pdf') => {
+    if (!content) return
     setError('')
     try {
       const blob =
@@ -35,17 +37,46 @@ export function OptimizedResumeDownloads({ content }: OptimizedResumeDownloadsPr
     <div className="download-area">
       <h3>Optimized Resume Output</h3>
       <div className="download-area__grid">
-        <button type="button" onClick={() => void handleExport('docx')}>
-          <Download size={18} />
-          <span>Download as Word</span>
-          <small>.docx</small>
+        <button
+          type="button"
+          className="download-area__button download-area__button--word"
+          disabled={!isReady}
+          onClick={() => void handleExport('docx')}
+        >
+          <span className="download-area__file-icon"><FileText size={22} /></span>
+          <span className="download-area__label">
+            <strong>Download as Word</strong>
+            <small>.docx (Recommended)</small>
+          </span>
+          <Download className="download-area__download-icon" size={21} />
         </button>
-        <button type="button" onClick={() => void handleExport('pdf')}>
-          <Download size={18} />
-          <span>Download as PDF</span>
-          <small>.pdf</small>
+        <button
+          type="button"
+          className="download-area__button download-area__button--pdf"
+          disabled={!isReady}
+          onClick={() => void handleExport('pdf')}
+        >
+          <span className="download-area__file-icon"><FileText size={22} /></span>
+          <span className="download-area__label">
+            <strong>Download as PDF</strong>
+            <small>.pdf (ATS Friendly)</small>
+          </span>
+          <Download className="download-area__download-icon" size={21} />
         </button>
       </div>
+      <p className={`download-area__hint${isReady ? ' download-area__hint--ready' : ''}`}>
+        <Info size={20} />
+        <span>
+          {isReady ? (
+            <>
+              Both files include the AI-optimized version with improved content and missing skills
+              added. <strong>AI-generated content, please review it manually before use.</strong>
+            </>
+          ) : (
+            'Available after Generate with AI.'
+          )}
+        </span>
+      </p>
       {error ? <p className="field-error">{error}</p> : null}
     </div>
   )

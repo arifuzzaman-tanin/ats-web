@@ -509,42 +509,190 @@
 }
 
 .benefits-list {
-  margin: 1rem 0;
+  margin: 0;
+  padding: clamp(1rem, 1.5vw, 1.35rem);
+  list-style: none;
   color: $color-muted;
   display: grid;
-  gap: 0.4rem;
+  align-content: start;
+  gap: 0.85rem;
   font-size: 0.9rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    line-height: 1.35;
+  }
+
+  svg {
+    flex: 0 0 auto;
+    color: $color-success;
+  }
+}
+
+.ai-tab {
+  display: grid;
+  gap: clamp(0.8rem, 1.4vh, 1.15rem);
+  min-height: 0;
+}
+
+.ai-tab__intro {
+  h2 {
+    margin-bottom: 0.45rem;
+    font-size: 1.08rem;
+    line-height: 1.3;
+  }
+
+  p {
+    max-width: 760px;
+    color: $color-muted;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+}
+
+.ai-tab__workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(260px, 1fr);
+  gap: clamp(1rem, 1.5vw, 1.35rem);
+  min-height: 0;
+}
+
+.ai-tab__action-column {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 10px;
+  background: #f7fbff;
+}
+
+.ai-tab__optimize-button {
+  width: calc(100% - 2px);
+  margin: 0 1px 1px;
+
+  > span {
+    display: contents;
+  }
 }
 
 .download-area {
-  margin-top: 1.6rem;
+  min-width: 0;
+  padding-left: clamp(1rem, 1.4vw, 1.35rem);
+  border-left: 1px solid $color-border;
 
   h3 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
   }
 
   &__grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.8rem;
   }
 
   button {
-    min-width: 170px;
+    width: 100%;
+    min-width: 0;
     border: 1px solid $color-border;
-    border-radius: 10px;
-    background: #fff;
+    border-radius: 8px;
+    background: #f7faff;
     color: $color-text;
-    padding: 0.9rem 1rem;
+    padding: 0.7rem 0.8rem;
     display: grid;
-    gap: 0.25rem;
-    justify-items: start;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+
+    &:not(:disabled):hover {
+      border-color: $color-primary;
+      background: #fff;
+    }
+
+    &:not(:disabled) {
+      color: $color-navy;
+      cursor: pointer;
+
+      .download-area__download-icon {
+        color: $color-primary;
+      }
+    }
+
+    &:disabled {
+      color: #929bbc;
+      cursor: not-allowed;
+    }
   }
 
   small {
     color: $color-muted;
   }
+}
+
+.download-area__file-icon {
+  width: 30px;
+  height: 34px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  color: #7c86aa;
+  background: #e3e9f4;
+}
+
+.download-area__button:not(:disabled).download-area__button--word .download-area__file-icon {
+  color: #fff;
+  background: #0877f2;
+}
+
+.download-area__button:not(:disabled).download-area__button--pdf .download-area__file-icon {
+  color: #fff;
+  background: #f1262f;
+}
+
+.download-area__label {
+  display: grid;
+  gap: 0.15rem;
+
+  strong {
+    font-size: 0.9rem;
+  }
+
+  small {
+    font-size: 0.76rem;
+  }
+}
+
+.download-area__download-icon {
+  color: #8c96ba;
+}
+
+.download-area__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1.4rem 0 0;
+  color: $color-muted;
+  font-size: 0.83rem;
+
+  svg {
+    flex: 0 0 auto;
+  }
+
+  span {
+    line-height: 1.45;
+  }
+
+  strong {
+    color: $color-text;
+    font-weight: 700;
+  }
+}
+
+.download-area__hint--ready {
+  align-items: flex-start;
 }
 
 @media (max-width: 1180px) {
@@ -663,6 +811,16 @@
     border-left: 0;
     border-top: 1px solid $color-border;
     padding: 2rem 0 0;
+  }
+
+  .ai-tab__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .download-area {
+    padding: 1rem 0 0;
+    border-left: 0;
+    border-top: 1px solid $color-border;
   }
 }
 
