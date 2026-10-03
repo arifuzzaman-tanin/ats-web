@@ -23,7 +23,7 @@ export function ResumeImprovementTabs({ result }: ResumeImprovementTabsProps) {
       id: 'ai-resume-optimization',
       label: 'AI Resume Generation',
       icon: <Sparkles size={22} />,
-      panel: <AIResumeOptimization result={result} />,
+      panel: <AIResumeOptimization />,
     },
   ]
 

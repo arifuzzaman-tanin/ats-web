@@ -304,6 +304,12 @@
   z-index: 2;
   pointer-events: none;
 
+  &--fullscreen {
+    position: fixed;
+    border-radius: 0;
+    z-index: 1000;
+  }
+
   &__visual {
     position: relative;
     width: min(210px, 58vw);

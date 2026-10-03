@@ -1,35 +1,31 @@
-import { ArrowRight, CircleCheck, Sparkles } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowRight, CircleAlert, CircleCheck, Sparkles, X } from 'lucide-react'
 import { Button } from '../../../components/ui/Button/Button'
-import { Spinner } from '../../../components/ui/Spinner/Spinner'
 import { useResumeStore } from '../../../store/resumeStore'
-import type { ExtractSkillsResponse } from '../../../types/resume'
-import { summarizeSkills } from '../../resume-analysis/utils/skillUtils'
-import { useOptimizeResumeMutation } from '../hooks/useOptimizeResumeMutation'
 import { OptimizedResumeDownloads } from './OptimizedResumeDownloads'
 
-interface AIResumeOptimizationProps {
-  result: ExtractSkillsResponse
-}
-
-export function AIResumeOptimization({ result }: AIResumeOptimizationProps) {
-  const resumeText = useResumeStore((state) => state.resumeText)
-  const jobDescription = useResumeStore((state) => state.jobDescription)
-  const includeQuantitativeAchievements = useResumeStore(
-    (state) => state.includeQuantitativeAchievements,
-  )
+export function AIResumeOptimization() {
+  const [isUnavailableModalOpen, setIsUnavailableModalOpen] = useState(false)
+  const optimizeButtonRef = useRef<HTMLButtonElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const optimizedResume = useResumeStore((state) => state.optimizedResume)
-  const optimizeMutation = useOptimizeResumeMutation()
-  const { missingSkillNames, foundSkillNames } = summarizeSkills(result)
 
-  const optimize = () => {
-    optimizeMutation.mutate({
-      resume: resumeText,
-      jobDescription,
-      missingSkills: missingSkillNames,
-      foundSkills: foundSkillNames,
-      includeQuantitativeAchievements,
-    })
-  }
+  useEffect(() => {
+    if (!isUnavailableModalOpen) return
+
+    const optimizeButton = optimizeButtonRef.current
+    closeButtonRef.current?.focus()
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsUnavailableModalOpen(false)
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      optimizeButton?.focus()
+    }
+  }, [isUnavailableModalOpen])
 
   return (
     <div className="ai-tab">
@@ -50,22 +46,57 @@ export function AIResumeOptimization({ result }: AIResumeOptimizationProps) {
             <li><CircleCheck size={20} />Keep your original experience and tone</li>
           </ul>
           <Button
+            ref={optimizeButtonRef}
             type="button"
             className="ai-tab__optimize-button"
-            icon={optimizeMutation.isPending ? <Spinner /> : <Sparkles size={20} />}
-            onClick={optimize}
-            disabled={optimizeMutation.isPending}
+            icon={<Sparkles size={20} />}
+            onClick={() => setIsUnavailableModalOpen(true)}
           >
-            {optimizeMutation.isPending ? 'Optimizing Resume...' : 'Optimize My Resume'}
-            {!optimizeMutation.isPending ? <ArrowRight size={20} /> : null}
+            Optimize My Resume
+            <ArrowRight size={20} />
           </Button>
-          {optimizeMutation.error ? (
-            <p className="field-error">Unable to optimize resume. Please try again.</p>
-          ) : null}
         </div>
 
         <OptimizedResumeDownloads content={optimizedResume} />
       </div>
+
+      {isUnavailableModalOpen ? (
+        <div
+          className="service-modal__backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setIsUnavailableModalOpen(false)
+          }}
+        >
+          <section
+            className="service-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="service-modal-title"
+            aria-describedby="service-modal-description"
+          >
+            <button
+              ref={closeButtonRef}
+              type="button"
+              className="service-modal__close"
+              aria-label="Close"
+              onClick={() => setIsUnavailableModalOpen(false)}
+            >
+              <X size={20} />
+            </button>
+            <div className="service-modal__icon" aria-hidden="true">
+              <CircleAlert size={30} />
+            </div>
+            <h2 id="service-modal-title">AI resume generation is unavailable</h2>
+            <p id="service-modal-description">
+              This service is currently disabled. Please check back later or use the Prompt
+              Builder to improve your resume in the meantime.
+            </p>
+            <Button type="button" onClick={() => setIsUnavailableModalOpen(false)}>
+              Got it
+            </Button>
+          </section>
+        </div>
+      ) : null}
     </div>
   )
 }

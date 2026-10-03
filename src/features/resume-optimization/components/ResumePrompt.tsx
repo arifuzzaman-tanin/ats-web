@@ -1,7 +1,8 @@
-import { Copy, FilePlus2 } from 'lucide-react'
+import { CircleHelp, Copy, FilePlus2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Button } from '../../../components/ui/Button/Button'
 import { Checkbox } from '../../../components/ui/Checkbox/Checkbox'
+import { Tooltip } from '../../../components/ui/Tooltip/Tooltip'
 import { useResumeStore } from '../../../store/resumeStore'
 import type { ExtractSkillsResponse } from '../../../types/resume'
 import { summarizeSkills } from '../../resume-analysis/utils/skillUtils'
@@ -12,6 +13,8 @@ interface ResumePromptProps {
 }
 
 export function ResumePrompt({ result }: ResumePromptProps) {
+  const quantitativeAchievementsHelp =
+    'Add instructions to include measurable results (e.g., "improved performance by 40%", "led a team of 5", etc.).'
   const [copied, setCopied] = useState(false)
   const resumeText = useResumeStore((state) => state.resumeText)
   const jobDescription = useResumeStore((state) => state.jobDescription)
@@ -69,9 +72,26 @@ export function ResumePrompt({ result }: ResumePromptProps) {
       <Checkbox
         checked={includeQuantitativeAchievements}
         onChange={(event) => setIncludeQuantitativeAchievements(event.target.checked)}
-        label="Include quantitative achievements"
-        description='Add instructions to include measurable results (e.g., "improved performance by 40%", "led a team of 5", etc.).'
+        label={
+          <span className="quantitative-achievements-label">
+            Include quantitative achievements
+            <Tooltip label={quantitativeAchievementsHelp}>
+              <span
+                className="quantitative-achievements-help"
+                aria-label={quantitativeAchievementsHelp}
+                tabIndex={0}
+                onClick={(event) => event.preventDefault()}
+              >
+                <CircleHelp size={18} />
+              </span>
+            </Tooltip>
+          </span>
+        }
       />
+
+      <p className="quantitative-achievements-note">
+        <strong>Recommended:</strong> Metrics show your impact and make achievements more credible.
+      </p>
 
       <div className="prompt-actions">
         <Button

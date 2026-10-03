@@ -1,4 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/ui/Button/Button'
 import { Card } from '../../components/ui/Card/Card'
@@ -11,6 +12,12 @@ import { useResumeStore } from '../../store/resumeStore'
 export function ResumeAnalysisPage() {
   const navigate = useNavigate()
   const result = useResumeStore((state) => state.analysisResult)
+  const setScanAnimationVisible = useResumeStore((state) => state.setScanAnimationVisible)
+
+  useEffect(() => {
+    if (!result) return
+    setScanAnimationVisible(false)
+  }, [result, setScanAnimationVisible])
 
   if (!result) return null
 
