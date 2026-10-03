@@ -14,7 +14,7 @@ interface ResumePromptProps {
 
 export function ResumePrompt({ result }: ResumePromptProps) {
   const quantitativeAchievementsHelp =
-    'Add instructions to include measurable results (e.g., "improved performance by 40%", "led a team of 5", etc.).'
+    'Ask the AI to strengthen measurable results already in the resume and flag possible additions for manual verification.'
   const [copied, setCopied] = useState(false)
   const resumeText = useResumeStore((state) => state.resumeText)
   const jobDescription = useResumeStore((state) => state.jobDescription)
@@ -63,8 +63,8 @@ export function ResumePrompt({ result }: ResumePromptProps) {
         <div>
           <h2>Generate a Resume Improvement Prompt</h2>
           <p>
-            Get a ready-to-use prompt for ChatGPT to create a new resume with the missing skills and
-            improvements.
+            Get a ready-to-use prompt that optimizes your resume and incorporates missing skills only
+            when your experience supports them.
           </p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export function ResumePrompt({ result }: ResumePromptProps) {
       />
 
       <p className="quantitative-achievements-note">
-        <strong>Recommended:</strong> Metrics show your impact and make achievements more credible.
+        <strong>Recommended:</strong> Existing metrics show impact; unsupported numbers are never added.
       </p>
 
       <div className="prompt-actions">

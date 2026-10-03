@@ -34,7 +34,7 @@ describe('ResumeImprovementTabs', () => {
       screen.getByRole('heading', { name: 'Generate a Resume Improvement Prompt' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByLabelText(/Add instructions to include measurable results/),
+      screen.getByLabelText(/strengthen measurable results already in the resume/),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('checkbox', { name: /Include quantitative achievements/ }),
