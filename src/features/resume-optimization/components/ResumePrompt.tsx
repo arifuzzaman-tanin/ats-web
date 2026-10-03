@@ -1,4 +1,4 @@
-import { Copy, FilePlus2, Info } from 'lucide-react'
+import { Copy, FilePlus2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Button } from '../../../components/ui/Button/Button'
 import { Checkbox } from '../../../components/ui/Checkbox/Checkbox'
@@ -88,17 +88,7 @@ export function ResumePrompt({ result }: ResumePromptProps) {
       </div>
 
       <div className="usage-note">
-        <div className="usage-note__title">
-          <Info size={18} />
-          <h3>How to use this prompt?</h3>
-        </div>
-        <ol>
-          <li>Click "Copy Prompt" to copy the detailed prompt.</li>
-          <li>
-            Paste it in any AI tool like ChatGPT, Gemini, or Claude and generate your improved
-            resume.
-          </li>
-        </ol>
+        Copy the prompt and paste it into ChatGPT, Claude, Gemini, or another AI assistant.
       </div>
     </div>
   )
