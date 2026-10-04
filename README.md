@@ -24,6 +24,17 @@ npm run lint
 npm test
 ```
 
+## GitHub Pages deployment
+
+Pushes to `main` are built and deployed automatically by
+`.github/workflows/deploy-pages.yml`. The production site is available at:
+
+<https://arifuzzaman-tanin.github.io/ats-web/>
+
+Before the first deployment, open the repository on GitHub and select
+**Settings → Pages → Build and deployment → Source → GitHub Actions**. You can
+also start a deployment manually from the repository's **Actions** tab.
+
 ## Routes
 
 - `/` - Resume scanner page
