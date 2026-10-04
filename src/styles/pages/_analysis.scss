@@ -312,6 +312,24 @@
     background: transparent;
     border-left: 0;
   }
+
+  &__skill-name {
+    position: relative;
+    padding-right: 4.8rem;
+
+    .tooltip {
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &__skill-row:hover .skill-row-copy,
+  &__skill-row:focus-within .skill-row-copy {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .icon-action {
@@ -320,6 +338,25 @@
   color: $color-muted;
   padding: 0.1rem;
   vertical-align: middle;
+}
+
+.skill-row-copy {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease, color 150ms ease;
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  &:hover,
+  &:focus-visible,
+  &.is-copied {
+    opacity: 1;
+    pointer-events: auto;
+    color: $color-navy;
+  }
 }
 
 .skill-icon {

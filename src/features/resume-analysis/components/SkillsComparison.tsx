@@ -11,11 +11,34 @@ interface SkillsComparisonProps {
 type CopyGroup = 'missing' | 'found'
 
 function SkillRows({ skills, available }: { skills: ResumeSkill[]; available: boolean }) {
+  const [copiedSkill, setCopiedSkill] = useState<string | null>(null)
+
+  const copySkill = async (skillName: string) => {
+    await navigator.clipboard.writeText(skillName)
+    setCopiedSkill(skillName)
+    window.setTimeout(() => setCopiedSkill(null), 1500)
+  }
+
   return (
     <>
       {skills.map((skill) => (
-        <tr key={`${skill.name}-${available ? 'found' : 'missing'}`}>
-          <td>{skill.name}</td>
+        <tr
+          className="skills-table__skill-row"
+          key={`${skill.name}-${available ? 'found' : 'missing'}`}
+        >
+          <td className="skills-table__skill-name">
+            <span>{skill.name}</span>
+            <Tooltip label={copiedSkill === skill.name ? 'Copied' : `Copy ${skill.name}`}>
+              <button
+                type="button"
+                className={`icon-action skill-row-copy${copiedSkill === skill.name ? ' is-copied' : ''}`}
+                aria-label={`Copy ${skill.name}`}
+                onClick={() => void copySkill(skill.name)}
+              >
+                {copiedSkill === skill.name ? 'Copied' : <Copy size={18} />}
+              </button>
+            </Tooltip>
+          </td>
           <td>
             {available ? (
               <CheckCircle2 className="skill-icon skill-icon--success" size={23} />

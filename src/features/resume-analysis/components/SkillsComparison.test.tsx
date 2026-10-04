@@ -47,4 +47,13 @@ describe('SkillsComparison', () => {
     fireEvent.click(screen.getByLabelText('Copy found skills'))
     expect(writeTextMock).toHaveBeenCalledWith('React')
   })
+
+  it('copies an individual skill from its row', async () => {
+    render(<SkillsComparison result={result} />)
+
+    fireEvent.click(screen.getByLabelText('Copy Docker'))
+
+    expect(writeTextMock).toHaveBeenCalledWith('Docker')
+    expect(await screen.findByText('Copied')).toBeInTheDocument()
+  })
 })
