@@ -33,10 +33,14 @@ Opening `/analysis` without analysis data redirects the user back to the scanner
 
 ## Backend API
 
-The scanner posts resume text and job description to:
+The scanner posts resume text and job description to `/extract_skills` using an
+environment-aware API base URL:
+
+- Development and tests: `http://localhost:5000`
+- Production builds: `https://arifuzzamantanin.pythonanywhere.com`
 
 ```http
-POST http://localhost:5000/extract_skills
+POST /extract_skills
 Content-Type: application/json
 ```
 
@@ -48,7 +52,11 @@ Content-Type: application/json
 }
 ```
 
-Axios configuration lives in `src/services/apiClient.ts`, and endpoint constants live in `src/services/endpoints.ts`.
+To override the default for a deployment or local machine, define
+`VITE_API_BASE_URL` in the corresponding Vite environment file (for example,
+`.env.local`). Axios configuration lives in `src/services/apiClient.ts`, the API
+environment configuration lives in `src/config/api.ts`, and endpoint constants
+live in `src/services/endpoints.ts`.
 
 ## Architecture
 
