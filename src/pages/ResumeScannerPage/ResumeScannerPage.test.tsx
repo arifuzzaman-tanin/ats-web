@@ -77,4 +77,20 @@ describe('resume scanner access-key flow', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
     await waitFor(() => expect(post).toHaveBeenCalledTimes(1))
   })
+
+  it('closes the access-key modal from the backdrop and close button', async () => {
+    renderScanner()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Scan Resume' }))
+    const dialog = await screen.findByRole('dialog')
+    fireEvent.mouseDown(dialog.parentElement as HTMLElement)
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Scan Resume' }))
+    await screen.findByRole('dialog')
+    fireEvent.click(screen.getByRole('button', { name: 'Close access key dialog' }))
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
 })

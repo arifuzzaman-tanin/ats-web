@@ -151,6 +151,7 @@ export function ResumeScannerPage() {
         isGettingAccessKey={isGettingAccessKey}
         isOpen={isAccessKeyModalOpen}
         onAccessKeyChange={handleAccessKeyChange}
+        onClose={() => setIsAccessKeyModalOpen(false)}
         onContinue={handleContinue}
         onGetAccessKey={handleGetAccessKey}
       />

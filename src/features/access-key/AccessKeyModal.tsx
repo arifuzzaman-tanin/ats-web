@@ -1,4 +1,4 @@
-import { ArrowRight, Gift, KeyRound, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Gift, KeyRound, ShieldCheck, X } from 'lucide-react'
 import { useEffect, useRef, type FormEvent } from 'react'
 import { Button } from '../../components/ui/Button/Button'
 import { Spinner } from '../../components/ui/Spinner/Spinner'
@@ -9,6 +9,7 @@ interface AccessKeyModalProps {
   isGettingAccessKey: boolean
   isOpen: boolean
   onAccessKeyChange: (accessKey: string) => void
+  onClose: () => void
   onContinue: () => void
   onGetAccessKey: () => void
 }
@@ -19,6 +20,7 @@ export function AccessKeyModal({
   isGettingAccessKey,
   isOpen,
   onAccessKeyChange,
+  onClose,
   onContinue,
   onGetAccessKey,
 }: AccessKeyModalProps) {
@@ -28,6 +30,17 @@ export function AccessKeyModal({
     if (isOpen) inputRef.current?.focus()
   }, [isOpen])
 
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -36,7 +49,13 @@ export function AccessKeyModal({
   }
 
   return (
-    <div className="access-key-modal" role="presentation">
+    <div
+      className="access-key-modal"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
       <section
         className="access-key-modal__dialog"
         role="dialog"
@@ -44,6 +63,14 @@ export function AccessKeyModal({
         aria-labelledby="access-key-title"
         aria-describedby="access-key-description"
       >
+        <button
+          type="button"
+          className="access-key-modal__close"
+          aria-label="Close access key dialog"
+          onClick={onClose}
+        >
+          <X size={20} aria-hidden="true" />
+        </button>
         <div className="access-key-modal__intro">
           <span className="access-key-modal__icon" aria-hidden="true">
             <KeyRound size={26} strokeWidth={2.2} />
