@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages has no server-side SPA fallback. Forward the requested
+      // route through the app entry point, where index.html restores the URL.
+      ;(function redirectToApp(location) {
+        const projectPathSegments = 1
+        const basePath = location.pathname
+          .split('/')
+          .slice(0, projectPathSegments + 1)
+          .join('/')
+        const route = location.pathname
+          .slice(1)
+          .split('/')
+          .slice(projectPathSegments)
+          .join('/')
+          .replace(/&/g, '~and~')
+
+        location.replace(
+          location.protocol +
+            '//' +
+            location.hostname +
+            (location.port ? ':' + location.port : '') +
+            basePath +
+            '/?/' +
+            route +
+            (location.search ? '&' + location.search.slice(1).replace(/&/g, '~and~') : '') +
+            location.hash,
+        )
+      })(window.location)
+    </script>
+  </head>
+  <body></body>
+</html>

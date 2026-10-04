@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import type { ExtractSkillsResponse, UploadedFileMetadata } from '../types/resume'
 
 interface ResumeState {
@@ -33,23 +34,40 @@ const initialState = {
   optimizedResume: undefined,
 }
 
-export const useResumeStore = create<ResumeState>((set) => ({
-  ...initialState,
-  setResumeText: (resumeText) => set({ resumeText }),
-  setJobDescription: (jobDescription) => set({ jobDescription }),
-  setUploadedFileName: (uploadedFileName) => set({ uploadedFileName }),
-  setUploadedFileMetadata: (uploadedFileMetadata) => set({ uploadedFileMetadata }),
-  setAnalysisResult: (analysisResult) =>
-    set({ analysisResult, includeQuantitativeAchievements: true }),
-  setScanAnimationVisible: (isScanAnimationVisible) => set({ isScanAnimationVisible }),
-  setIncludeQuantitativeAchievements: (includeQuantitativeAchievements) =>
-    set({ includeQuantitativeAchievements }),
-  setOptimizedResume: (optimizedResume) => set({ optimizedResume }),
-  resetAnalysis: () =>
-    set({
-      analysisResult: undefined,
-      includeQuantitativeAchievements: true,
-      optimizedResume: undefined,
+export const useResumeStore = create<ResumeState>()(
+  persist(
+    (set) => ({
+      ...initialState,
+      setResumeText: (resumeText) => set({ resumeText }),
+      setJobDescription: (jobDescription) => set({ jobDescription }),
+      setUploadedFileName: (uploadedFileName) => set({ uploadedFileName }),
+      setUploadedFileMetadata: (uploadedFileMetadata) => set({ uploadedFileMetadata }),
+      setAnalysisResult: (analysisResult) =>
+        set({ analysisResult, includeQuantitativeAchievements: true }),
+      setScanAnimationVisible: (isScanAnimationVisible) => set({ isScanAnimationVisible }),
+      setIncludeQuantitativeAchievements: (includeQuantitativeAchievements) =>
+        set({ includeQuantitativeAchievements }),
+      setOptimizedResume: (optimizedResume) => set({ optimizedResume }),
+      resetAnalysis: () =>
+        set({
+          analysisResult: undefined,
+          includeQuantitativeAchievements: true,
+          optimizedResume: undefined,
+        }),
+      resetAll: () => set({ ...initialState }),
     }),
-  resetAll: () => set({ ...initialState }),
-}))
+    {
+      name: 'ats-resume-workflow',
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({
+        resumeText: state.resumeText,
+        jobDescription: state.jobDescription,
+        uploadedFileName: state.uploadedFileName,
+        uploadedFileMetadata: state.uploadedFileMetadata,
+        analysisResult: state.analysisResult,
+        includeQuantitativeAchievements: state.includeQuantitativeAchievements,
+        optimizedResume: state.optimizedResume,
+      }),
+    },
+  ),
+)

@@ -5,6 +5,24 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ats-resume-app</title>
+    <script>
+      // Restore routes forwarded by public/404.html when hosted on GitHub Pages.
+      ;(function restoreGitHubPagesRoute(location) {
+        if (location.search.startsWith('?/')) {
+          const route = location.search
+            .slice(1)
+            .split('&')
+            .map((segment) => segment.replace(/~and~/g, '&'))
+            .join('?')
+
+          window.history.replaceState(
+            null,
+            '',
+            location.pathname.slice(0, -1) + route + location.hash,
+          )
+        }
+      })(window.location)
+    </script>
   </head>
   <body>
     <div id="root"></div>
