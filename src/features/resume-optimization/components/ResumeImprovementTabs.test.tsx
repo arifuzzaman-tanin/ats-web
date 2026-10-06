@@ -31,13 +31,13 @@ describe('ResumeImprovementTabs', () => {
       'false',
     )
     expect(
-      screen.getByRole('heading', { name: 'Generate a Resume Improvement Prompt' }),
+      screen.getByRole('heading', { name: 'Build your tailored prompt' }),
     ).toBeInTheDocument()
     expect(
       screen.getByLabelText(/strengthen measurable results already in the resume/),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('checkbox', { name: /Include quantitative achievements/ }),
+      screen.getByRole('checkbox', { name: 'Strengthen measurable impact' }),
     ).toBeChecked()
   })
 
@@ -48,7 +48,7 @@ describe('ResumeImprovementTabs', () => {
     render(<ResumeImprovementTabs result={result} />)
 
     expect(
-      screen.getByRole('checkbox', { name: /Include quantitative achievements/ }),
+      screen.getByRole('checkbox', { name: 'Strengthen measurable impact' }),
     ).toBeChecked()
   })
 

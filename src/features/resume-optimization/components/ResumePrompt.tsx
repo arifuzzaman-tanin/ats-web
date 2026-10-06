@@ -56,59 +56,62 @@ export function ResumePrompt({ result }: ResumePromptProps) {
 
   return (
     <div className="prompt-tab">
-      <div className="improvement-heading">
-        <span className="input-section__icon input-section__icon--blue">
-          <FilePlus2 size={26} />
+      <div className="prompt-tab__intro">
+        <span className="prompt-tab__icon" aria-hidden="true">
+          <FilePlus2 size={22} />
         </span>
         <div>
-          <h2>Generate a Resume Improvement Prompt</h2>
+          <h2>Build your tailored prompt</h2>
           <p>
-            Get a ready-to-use prompt that optimizes your resume and incorporates missing skills only
-            when your experience supports them.
+            Create a ready-to-use prompt that improves your resume while keeping every claim grounded
+            in your experience.
           </p>
         </div>
       </div>
 
-      <Checkbox
-        checked={includeQuantitativeAchievements}
-        onChange={(event) => setIncludeQuantitativeAchievements(event.target.checked)}
-        label={
-          <span className="quantitative-achievements-label">
-            Include quantitative achievements
-            <Tooltip label={quantitativeAchievementsHelp}>
-              <span
-                className="quantitative-achievements-help"
-                aria-label={quantitativeAchievementsHelp}
-                tabIndex={0}
-                onClick={(event) => event.preventDefault()}
-              >
-                <CircleHelp size={18} />
-              </span>
-            </Tooltip>
-          </span>
-        }
-      />
-
-      <p className="quantitative-achievements-note">
-        <strong>Recommended:</strong> Existing metrics show impact; unsupported numbers are never added.
-      </p>
-
-      <div className="prompt-actions">
-        <Button
-          type="button"
-          variant="secondary"
-          icon={<Copy size={20} />}
-          onClick={() => void copyPrompt()}
-        >
-          Copy Prompt
-        </Button>
-        <span className="copy-feedback" aria-live="polite">
-          {copied ? 'Copied' : ''}
-        </span>
+      <div className="prompt-option">
+        <div className="prompt-option__meta">
+          <span>Optional enhancement</span>
+          <span className="prompt-option__badge">Recommended</span>
+        </div>
+        <Checkbox
+          className="prompt-option__checkbox"
+          aria-label="Strengthen measurable impact"
+          checked={includeQuantitativeAchievements}
+          onChange={(event) => setIncludeQuantitativeAchievements(event.target.checked)}
+          description="Strengthens supported metrics and flags possible additions for you to verify. It never invents numbers."
+          label={
+            <span className="quantitative-achievements-label">
+              Strengthen measurable impact
+              <Tooltip label={quantitativeAchievementsHelp}>
+                <span
+                  className="quantitative-achievements-help"
+                  aria-label={quantitativeAchievementsHelp}
+                  tabIndex={0}
+                  onClick={(event) => event.preventDefault()}
+                >
+                  <CircleHelp size={17} />
+                </span>
+              </Tooltip>
+            </span>
+          }
+        />
       </div>
 
-      <div className="usage-note">
-        Copy the prompt and paste it into ChatGPT, Claude, Gemini, or another AI assistant.
+      <div className="prompt-tab__action">
+        <div className="prompt-actions">
+          <Button
+            type="button"
+            icon={<Copy size={19} />}
+            onClick={() => void copyPrompt()}
+          >
+            Copy prompt
+          </Button>
+          <span className="copy-feedback" aria-live="polite">
+            {copied ? 'Copied to clipboard' : ''}
+          </span>
+        </div>
+        <p>Paste it into ChatGPT, Claude, Gemini, or another AI assistant.</p>
       </div>
     </div>
   )
