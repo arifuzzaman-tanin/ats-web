@@ -500,8 +500,11 @@
   }
 
   .quantitative-achievements-label .tooltip::after {
-    width: max-content;
-    max-width: min(320px, 80vw);
+    box-sizing: border-box;
+    width: min(320px, calc(100vw - 2rem));
+    max-width: min(320px, calc(100vw - 2rem));
+    overflow: visible;
+    overflow-wrap: anywhere;
     white-space: normal;
     line-height: 1.45;
   }
