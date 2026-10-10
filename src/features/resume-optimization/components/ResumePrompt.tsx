@@ -111,7 +111,10 @@ export function ResumePrompt({ result }: ResumePromptProps) {
             {copied ? 'Copied to clipboard' : ''}
           </span>
         </div>
-        <p>Paste it into ChatGPT, Claude, Gemini, or another AI assistant.</p>
+        <p>
+          Paste it into ChatGPT, Claude, Gemini, or another AI assistant to create a tailored resume
+          with your relevant missing skills.
+        </p>
       </div>
     </div>
   )

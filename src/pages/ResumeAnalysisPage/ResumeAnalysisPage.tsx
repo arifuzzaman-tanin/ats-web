@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, CircleCheck } from 'lucide-react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/ui/Button/Button'
@@ -27,9 +27,15 @@ export function ResumeAnalysisPage() {
         Back & Rescan
       </Button>
 
-      <header className="page-heading page-heading--analysis">
-        <h1>Resume Analysis Result</h1>
-        <span className="page-heading__accent" />
+      <header className="analysis-header">
+        <div className="analysis-header__eyebrow">
+          <CircleCheck size={16} aria-hidden="true" />
+          Analysis complete
+        </div>
+        <div>
+          <h1>Resume analysis</h1>
+          <p>Your match score, keyword coverage, and next steps in one place.</p>
+        </div>
       </header>
 
       <div className="analysis-layout">

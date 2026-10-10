@@ -218,17 +218,22 @@
   display: inline-flex;
 }
 
-.tooltip:hover::after,
-.tooltip:focus-within::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
+.tooltip__content {
+  position: fixed;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 16px));
   color: #fff;
   background: $color-navy;
   padding: 0.35rem 0.55rem;
   border-radius: 6px;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   font-size: 0.78rem;
-  z-index: 3;
+  line-height: 1.35;
+  pointer-events: none;
+  z-index: 10000;
+
+  &:not([style]) {
+    visibility: hidden;
+  }
 }

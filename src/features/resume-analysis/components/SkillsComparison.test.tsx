@@ -31,8 +31,10 @@ describe('SkillsComparison', () => {
   it('groups missing skills before found skills', () => {
     render(<SkillsComparison result={result} />)
 
-    expect(screen.getByText('Missing Skills (2)')).toBeInTheDocument()
-    expect(screen.getByText('Found Skills (1)')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Needs attention' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Already matched' })).toBeInTheDocument()
+    expect(screen.queryByText('Add or highlight')).not.toBeInTheDocument()
+    expect(screen.queryByText('Matched')).not.toBeInTheDocument()
     expect(screen.getByText('Docker')).toBeInTheDocument()
     expect(screen.getByText('AWS')).toBeInTheDocument()
     expect(screen.getByText('React')).toBeInTheDocument()
@@ -41,10 +43,10 @@ describe('SkillsComparison', () => {
   it('copies missing and found skill lists', () => {
     render(<SkillsComparison result={result} />)
 
-    fireEvent.click(screen.getByLabelText('Copy missing skills'))
+    fireEvent.click(screen.getByLabelText('Copy skills not found in your resume'))
     expect(writeTextMock).toHaveBeenCalledWith('Docker, AWS')
 
-    fireEvent.click(screen.getByLabelText('Copy found skills'))
+    fireEvent.click(screen.getByLabelText('Copy skills found in your resume'))
     expect(writeTextMock).toHaveBeenCalledWith('React')
   })
 
@@ -54,6 +56,6 @@ describe('SkillsComparison', () => {
     fireEvent.click(screen.getByLabelText('Copy Docker'))
 
     expect(writeTextMock).toHaveBeenCalledWith('Docker')
-    expect(await screen.findByText('Copied')).toBeInTheDocument()
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('Copied')
   })
 })

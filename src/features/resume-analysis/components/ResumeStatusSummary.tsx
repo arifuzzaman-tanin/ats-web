@@ -1,4 +1,7 @@
+import type { CSSProperties } from 'react'
+import { Gauge } from 'lucide-react'
 import type { ResumeStatus } from '../../../types/resume'
+import { RESUME_STATUS_COLORS } from '../utils/getResumeStatus'
 import { ResumeStatusStepper } from './ResumeStatusStepper'
 
 interface ResumeStatusSummaryProps {
@@ -18,11 +21,21 @@ const descriptions: Record<ResumeStatus, string> = {
 }
 
 export function ResumeStatusSummary({ status }: ResumeStatusSummaryProps) {
+  const style = { '--status-color': RESUME_STATUS_COLORS[status] } as CSSProperties
+
   return (
-    <div className="status-summary">
-      <h2>Resume Status</h2>
+    <div className="status-summary" style={style}>
+      <div className="status-summary__heading">
+        <div>
+          <span className="status-summary__eyebrow">Resume status</span>
+        </div>
+        <span className="status-summary__badge">
+          <Gauge size={16} aria-hidden="true" />
+          {status}
+        </span>
+      </div>
       <ResumeStatusStepper status={status} />
-      <p>{descriptions[status]}</p>
+      <p className="status-summary__description">{descriptions[status]}</p>
     </div>
   )
 }

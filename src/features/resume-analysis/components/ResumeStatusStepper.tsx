@@ -26,8 +26,7 @@ export function ResumeStatusStepper({ status }: ResumeStatusStepperProps) {
             }`.trim()}
             key={item}
           >
-            <span className="status-stepper__line" aria-hidden="true" />
-            <span className="status-stepper__dot" aria-hidden="true" />
+            <span className="status-stepper__bar" aria-hidden="true" />
             <span className="status-stepper__label">{item}</span>
           </div>
         )
