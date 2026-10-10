@@ -93,4 +93,24 @@ describe('resume scanner access-key flow', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
+
+  it('clears the pasted resume text and job description independently', () => {
+    renderScanner()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Paste text' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Clear resume text' }))
+
+    expect(screen.getByLabelText('Resume text')).toHaveValue('')
+    expect(screen.queryByRole('button', { name: 'Clear resume text' })).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Job description')).toHaveValue(
+      'Looking for a software developer',
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Clear job description' }))
+
+    expect(screen.getByLabelText('Job description')).toHaveValue('')
+    expect(
+      screen.queryByRole('button', { name: 'Clear job description' }),
+    ).not.toBeInTheDocument()
+  })
 })

@@ -1,4 +1,4 @@
-import { FileText } from 'lucide-react'
+import { FileText, X } from 'lucide-react'
 import { useResumeStore } from '../../../store/resumeStore'
 
 interface JobDescriptionInputProps {
@@ -17,13 +17,25 @@ export function JobDescriptionInput({ error }: JobDescriptionInputProps) {
         </span>
         <h2 id="job-description-title">Job Description</h2>
       </div>
-      <textarea
-        className="resume-textarea resume-textarea--job"
-        value={jobDescription}
-        onChange={(event) => setJobDescription(event.target.value)}
-        placeholder="Paste the job description here..."
-        aria-label="Job description"
-      />
+      <div className="resume-textarea-shell">
+        <textarea
+          className="resume-textarea resume-textarea--job"
+          value={jobDescription}
+          onChange={(event) => setJobDescription(event.target.value)}
+          placeholder="Paste the job description here..."
+          aria-label="Job description"
+        />
+        {jobDescription ? (
+          <button
+            type="button"
+            className="resume-textarea__clear"
+            aria-label="Clear job description"
+            onClick={() => setJobDescription('')}
+          >
+            <X size={18} strokeWidth={2.3} aria-hidden="true" />
+          </button>
+        ) : null}
+      </div>
       {error ? <p className="field-error">{error}</p> : null}
     </section>
   )
