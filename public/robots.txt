@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /ats-web/analysis
+
+Sitemap: https://arifuzzaman-tanin.github.io/ats-web/sitemap.xml

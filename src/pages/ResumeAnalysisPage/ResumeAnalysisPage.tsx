@@ -23,7 +23,7 @@ export function ResumeAnalysisPage() {
 
   return (
     <main className="analysis-page">
-      <Button variant="ghost" icon={<ArrowLeft size={22} />} onClick={() => navigate('/')}>
+      <Button variant="ghost" icon={<ArrowLeft size={22} />} onClick={() => navigate('/resume-scanner')}>
         Back & Rescan
       </Button>
 
