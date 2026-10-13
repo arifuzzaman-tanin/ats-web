@@ -3,7 +3,7 @@ import {
   HelpCircle, Lightbulb, LockKeyhole, Menu, PencilLine, Play, ScanSearch,
   ShieldCheck, Sparkles, Video, X,
 } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import heroIllustration from '../../assets/ats-match-illustration.png'
 
@@ -19,7 +19,7 @@ const features = [
   { icon: Lightbulb, title: 'Actionable Suggestions', description: 'Get focused recommendations to improve your resume for the specific role.' },
   { icon: LockKeyhole, title: 'Privacy by Design', description: 'Files are processed for your scan; the app does not persist uploaded documents.' },
   { icon: ScanSearch, title: 'Deep Resume X-Ray Scan', description: 'Premium feature that reveals keywords, evidence gaps, equivalent skills, and partial requirement matches.' },
-  { icon: Video, title: 'AI Video Interviews with Jack', description: 'Premium interview practice tailored to the job description, with realistic follow-up questions, multilingual sessions, and actionable feedback.' },
+  { icon: Video, title: 'AI Mock Interviews with Jack', description: 'Premium practice for leadership, ownership, behavioral, technical, and role-specific interviews, with realistic follow-ups and actionable feedback.' },
 ]
 const plans = [
   {
@@ -32,11 +32,12 @@ const plans = [
   },
   {
     name: 'Premium', eyebrow: 'For active job seekers', price: '$50 USD', cadence: 'per month', available: true,
-    description: 'Turn every job description into a tailored application, a smarter search, and focused interview practice.', action: 'Get Premium',
+    trial: '7 days free',
+    description: 'Try the complete toolkit free for 7 days, then continue for $50 USD per month.', action: 'Start 7-day free trial',
     groups: [
       { title: 'Tailored applications', features: ['Deep X-Ray analysis of your resume and job description', 'A tailored resume and cover letter for every application', 'AI-assisted rewriting based on your real experience', 'Clear recommendations for missing skills and keywords', 'One-click resume optimization'] },
       { title: 'Smarter job search', features: ['Automatic job discovery across multiple trusted sources', 'Best-fit opportunities ranked by your skills and preferences', 'Duplicate, expired, and suspicious job detection', 'Browser extension for supported job sites', 'Form autofill with a review step before submission', 'Quick Apply on supported job sites'] },
-      { title: 'Interview support', features: ['AI video mock interviews with Jack, tailored to the job description', 'Realistic follow-up questions and post-interview feedback', 'Multilingual interview practice', 'Priority customer support'] },
+      { title: 'Interview support', features: ['AI video mock interviews with Jack, tailored to the job description', 'Leadership and people-management interview practice', 'Ownership and accountability interview practice', 'Technical and role-specific interview practice', 'Behavioral and situational interview practice', 'Realistic follow-up questions and post-interview feedback', 'Multilingual interview practice', 'Priority customer support'] },
     ],
   },
 ]
@@ -44,8 +45,9 @@ const faqs = [
   { question: 'How does ATS Optimizer work?', answer: 'ATS Optimizer compares your resume with a target job description, identifies matching and missing skills, highlights important keywords, and provides a compatibility analysis with practical recommendations.' },
   { question: 'Is my data safe and private?', answer: 'Uploaded files are converted to text in your browser, then the resume and job description are sent to the configured analysis service for processing. This web app does not persist uploaded documents. Processing and retention by the configured API should be confirmed in its deployment policy before sharing sensitive information.' },
   { question: 'What is included in the Free plan?', answer: 'The Free plan includes unlimited analysis, keyword matching, missing-skill identification, compatibility scoring, and prompts that help you improve your resume.' },
-  { question: 'What extra features come with Premium?', answer: 'For $50 USD per month, Premium provides deeper resume and job-description analysis, tailored resumes, AI-assisted rewriting based on your real experience, automatic job discovery across multiple sites, shortlisting of the opportunities that best match your skills, AI video mock interviews with Jack, and faster applications on supported job sites.' },
-  { question: 'How do AI video interviews with Jack work?', answer: 'This planned Premium feature will let you practice a video interview with Jack, an AI interviewer that uses the target job description to ask relevant questions and realistic follow-ups. You will be able to choose a supported language and receive actionable feedback after the session. AI video interviews are not currently active in this application.' },
+  { question: 'What extra features come with Premium?', answer: 'Premium starts with a 7-day free trial and is $50 USD per month after the trial. It provides deeper resume and job-description analysis, tailored resumes, AI-assisted rewriting based on your real experience, automatic job discovery across multiple sites, shortlisting of the opportunities that best match your skills, AI video mock interviews with Jack, and faster applications on supported job sites.' },
+  { question: 'How does the Premium free trial work?', answer: 'You can try Premium features free for 7 days. After the trial, Premium costs $50 USD per month.' },
+  { question: 'How do AI mock interviews with Jack work?', answer: 'This planned Premium feature will let you choose a leadership, ownership, behavioral, technical, or role-specific interview track. Jack will use the target job description to ask relevant questions and realistic follow-ups, then provide actionable feedback after the session. You will also be able to practice in a supported language. AI mock interviews are not currently active in this application.' },
   { question: 'Does the browser extension support Quick Apply?', answer: 'The planned extension will help fill supported forms and attach an optimized resume, with a review step before submission. Availability will depend on each supported website; the extension is not yet connected.' },
   { question: 'Can ATS Optimizer create a tailored resume for each job?', answer: 'The free workflow creates an AI-ready prompt grounded in your resume and target role. Direct, job-specific resume generation is a planned Premium feature and will use only verified experience, skills, and qualifications.' },
   { question: 'How does the Deep X-Ray Scan work?', answer: 'It examines the resume and job description for relevant skills, important keywords, gaps, evidence mismatches, related terminology, and concrete improvement opportunities.' },
@@ -56,28 +58,79 @@ function Logo() {
   return <Link className="brand" to="/" aria-label="ATS Optimizer home"><img src={`${import.meta.env.BASE_URL}ats-optimizer-logo.svg`} width="2090" height="325" alt="" /></Link>
 }
 
+function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
+  return <>
+    <div className="site-nav__links">
+      <a href="#how-it-works" onClick={onNavigate}>How It Works</a><a href="#features" onClick={onNavigate}>Features</a><a href="#pricing" onClick={onNavigate}>Pricing</a><a href="#faq" onClick={onNavigate}>FAQ</a>
+    </div>
+    <div className="site-nav__actions">
+      <button className="nav-sign-in" type="button" disabled title="Sign in is not available yet">Sign In</button>
+      <Link className="landing-button landing-button--primary" to={scannerPath} onClick={onNavigate}>Scan My Resume <ArrowRight aria-hidden="true" /></Link>
+    </div>
+  </>
+}
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const closeMenu = () => setIsOpen(false)
-  return (
+  const closeDrawer = () => {
+    setIsOpen(false)
+    menuButtonRef.current?.focus()
+  }
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeButtonRef.current?.focus()
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+        menuButtonRef.current?.focus()
+      }
+    }
+    const handleResize = () => {
+      if (window.innerWidth > 1024) setIsOpen(false)
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isOpen])
+
+  return <>
     <header className="site-header">
       <div className="landing-container site-header__inner">
         <Logo />
-        <button className="mobile-menu-button" type="button" aria-label={isOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={isOpen} aria-controls="primary-navigation" onClick={() => setIsOpen((value) => !value)}>
-          {isOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+        <button ref={menuButtonRef} className="mobile-menu-button" type="button" aria-label="Open navigation" aria-expanded={isOpen} aria-controls="mobile-navigation" onClick={() => setIsOpen(true)}>
+          <Menu aria-hidden="true" />
         </button>
-        <nav id="primary-navigation" className={`site-nav${isOpen ? ' site-nav--open' : ''}`} aria-label="Primary navigation">
-          <div className="site-nav__links">
-            <a href="#how-it-works" onClick={closeMenu}>How It Works</a><a href="#features" onClick={closeMenu}>Features</a><a href="#pricing" onClick={closeMenu}>Pricing</a><a href="#faq" onClick={closeMenu}>FAQ</a>
-          </div>
-          <div className="site-nav__actions">
-            <button className="nav-sign-in" type="button" disabled title="Sign in is not available yet">Sign In</button>
-            <Link className="landing-button landing-button--primary" to={scannerPath} onClick={closeMenu}>Scan My Resume <ArrowRight aria-hidden="true" /></Link>
-          </div>
+        <nav className="site-nav site-nav--desktop" aria-label="Primary navigation">
+          <NavigationContent />
         </nav>
       </div>
     </header>
-  )
+    <div className={`mobile-nav-layer${isOpen ? ' mobile-nav-layer--open' : ''}`} aria-hidden={!isOpen}>
+      <button className="mobile-nav-backdrop" type="button" aria-label="Close navigation" tabIndex={isOpen ? 0 : -1} onClick={closeDrawer} />
+      <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
+        <div className="mobile-nav__header">
+          <Logo />
+          <button ref={closeButtonRef} className="mobile-nav__close" type="button" aria-label="Close navigation" onClick={closeDrawer}>
+            <X aria-hidden="true" />
+          </button>
+        </div>
+        <NavigationContent onNavigate={closeMenu} />
+      </nav>
+    </div>
+  </>
 }
 
 function SectionHeading({ id, eyebrow, title, description }: { id: string; eyebrow: string; title: string; description?: string }) {
@@ -118,10 +171,10 @@ function PricingSection() {
     <div className="pricing-grid">{plans.map((plan) => {
       const isPremium = plan.name === 'Premium'
       return <article className={`pricing-card${isPremium ? ' pricing-card--featured' : ''}`} key={plan.name}>
-        {isPremium ? <span className="pricing-card__badge"><Sparkles aria-hidden="true" /> Most Popular</span> : null}
+        {isPremium ? <span className="pricing-card__badge"><Sparkles aria-hidden="true" /> 7 days free</span> : null}
         <div className="pricing-card__top">
           <div className="pricing-card__header"><p className="pricing-card__eyebrow">{plan.eyebrow}</p><h3>{plan.name}</h3><p>{plan.description}</p></div>
-          <div className="pricing-card__price-wrap"><p className="pricing-card__price"><span>{plan.price}</span><small>{plan.cadence}</small></p></div>
+          <div className="pricing-card__price-wrap">{plan.trial ? <><p className="pricing-card__trial-price"><span>$0</span><small>for 7 days</small></p><p className="pricing-card__renewal">Then {plan.price} {plan.cadence}</p></> : <p className="pricing-card__price"><span>{plan.price}</span><small>{plan.cadence}</small></p>}</div>
         </div>
         <div className="pricing-card__divider" />
         <div className="pricing-card__features">
@@ -130,7 +183,7 @@ function PricingSection() {
         {plan.available ? <Link className={`landing-button pricing-card__action${isPremium ? ' landing-button--primary' : ' landing-button--outline'}`} to={scannerPath}>{plan.action} <ArrowRight aria-hidden="true" /></Link> : <button className="landing-button landing-button--outline pricing-card__action" type="button" disabled>{plan.action}</button>}
       </article>
     })}</div>
-    <p className="pricing-footnote"><ShieldCheck aria-hidden="true" /> Start with the free plan. Upgrade only when the premium workflow fits your search.</p>
+    <p className="pricing-footnote"><ShieldCheck aria-hidden="true" /> Try Premium free for 7 days, then continue for $50 USD per month.</p>
   </div></section>
 }
 
