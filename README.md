@@ -75,7 +75,7 @@ live in `src/services/endpoints.ts`.
 - `src/components/ui` - Reusable UI primitives
 - `src/features/resume-scanner` - Scanner inputs, validation, file text extraction adapter
 - `src/features/resume-analysis` - API integration, response normalization, score/status/skills UI
-- `src/features/resume-optimization` - Prompt generation, AI optimization abstraction, export abstraction
+- `src/features/resume-optimization` - Tailored resume-improvement prompt generation
 - `src/store` - Zustand workflow state
 - `src/styles` - SCSS tokens, base styles, component styles, page styles
 - `src/types` - Shared domain models
@@ -84,4 +84,4 @@ live in `src/services/endpoints.ts`.
 
 PDF/DOC/DOCX parsing is intentionally isolated in `resumeTextExtractor.ts`. The current frontend accepts TXT directly and exposes a clear adapter point for backend or vetted client-side parsing.
 
-AI optimization and DOCX/PDF export are also isolated behind service interfaces so they can later connect to OpenAI, Gemini, Claude, a custom backend, or server-side document generation.
+The result page includes a free prompt builder grounded in the submitted resume, job description, and scan results.

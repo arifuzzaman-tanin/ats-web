@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { ExtractSkillsResponse } from '../../../types/resume'
 import { useResumeStore } from '../../../store/resumeStore'
@@ -19,22 +19,16 @@ describe('ResumeImprovementTabs', () => {
     useResumeStore.getState().resetAll()
   })
 
-  it('opens with Prompt Builder selected', () => {
+  it('shows the prompt builder without generation tabs', () => {
     render(<ResumeImprovementTabs result={result} />)
 
-    expect(screen.getByRole('tab', { name: 'Prompt Builder' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    )
-    expect(screen.getByRole('tab', { name: 'AI Resume Generation' })).toHaveAttribute(
-      'aria-selected',
-      'false',
-    )
+    expect(screen.queryByRole('tab')).not.toBeInTheDocument()
+    expect(screen.queryByText('AI Resume Generation')).not.toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Build your tailored prompt' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByLabelText(/strengthen measurable results already in the resume/),
+      screen.getByLabelText(/strengthen measurable results already in the resume/i),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('checkbox', { name: 'Strengthen measurable impact' }),
@@ -50,21 +44,5 @@ describe('ResumeImprovementTabs', () => {
     expect(
       screen.getByRole('checkbox', { name: 'Strengthen measurable impact' }),
     ).toBeChecked()
-  })
-
-  it('shows a service-disabled modal instead of starting AI optimization', () => {
-    render(<ResumeImprovementTabs result={result} />)
-
-    fireEvent.click(screen.getByRole('tab', { name: 'AI Resume Generation' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Optimize My Resume' }))
-
-    const dialog = screen.getByRole('dialog', {
-      name: 'AI resume generation is unavailable',
-    })
-    expect(dialog).toBeInTheDocument()
-    expect(dialog).toHaveTextContent('This service is currently disabled.')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Got it' }))
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 })

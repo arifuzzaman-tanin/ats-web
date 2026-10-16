@@ -1,9 +1,9 @@
 import {
-  ArrowRight, BarChart3, ChevronDown, CircleCheck, FileSearch, FileUp,
-  HelpCircle, Lightbulb, LockKeyhole, Menu, PencilLine, Play, ScanSearch,
-  ShieldCheck, Sparkles, Video, X,
+  ArrowRight, BarChart3, ChevronDown, FileSearch, FileUp,
+  HelpCircle, Lightbulb, LockKeyhole, Menu, PencilLine, Play,
+  ShieldCheck, Sparkles, X,
 } from 'lucide-react'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import heroIllustration from '../../assets/ats-match-illustration.png'
 
@@ -18,40 +18,13 @@ const features = [
   { icon: FileSearch, title: 'Skill Gap Identification', description: 'Find matched skills, missing skills, and important job requirements.' },
   { icon: Lightbulb, title: 'Actionable Suggestions', description: 'Get focused recommendations to improve your resume for the specific role.' },
   { icon: LockKeyhole, title: 'Privacy by Design', description: 'Files are processed for your scan; the app does not persist uploaded documents.' },
-  { icon: ScanSearch, title: 'Deep Resume X-Ray Scan', description: 'Premium feature that reveals keywords, evidence gaps, equivalent skills, and partial requirement matches.' },
-  { icon: Video, title: 'AI Mock Interviews with Jack', description: 'Premium practice for leadership, ownership, behavioral, technical, and role-specific interviews, with realistic follow-ups and actionable feedback.' },
-]
-const plans = [
-  {
-    name: 'Free', eyebrow: 'Start here', price: '$0', cadence: 'Free forever', available: true,
-    description: 'Everything you need to understand your resume match and make your next application stronger.', action: 'Start scanning for free',
-    groups: [
-      { title: 'Resume analysis', features: ['Unlimited resume analysis', 'Matched and missing skills', 'ATS keyword highlighting', 'Resume compatibility score'] },
-      { title: 'Clear next steps', features: ['Skill gap and mismatch analysis', 'AI-ready optimization prompt', 'Resume comparison summary'] },
-    ],
-  },
-  {
-    name: 'Premium', eyebrow: 'For active job seekers', price: '$50 USD', cadence: 'per month', available: true,
-    trial: '7 days free',
-    description: 'Try the complete toolkit free for 7 days, then continue for $50 USD per month.', action: 'Start 7-day free trial',
-    groups: [
-      { title: 'Tailored applications', features: ['Deep X-Ray analysis of your resume and job description', 'A tailored resume and cover letter for every application', 'AI-assisted rewriting based on your real experience', 'Clear recommendations for missing skills and keywords', 'One-click resume optimization'] },
-      { title: 'Smarter job search', features: ['Automatic job discovery across multiple trusted sources', 'Best-fit opportunities ranked by your skills and preferences', 'Duplicate, expired, and suspicious job detection', 'Browser extension for supported job sites', 'Form autofill with a review step before submission', 'Quick Apply on supported job sites'] },
-      { title: 'Interview support', features: ['AI video mock interviews with Jack, tailored to the job description', 'Leadership and people-management interview practice', 'Ownership and accountability interview practice', 'Technical and role-specific interview practice', 'Behavioral and situational interview practice', 'Realistic follow-up questions and post-interview feedback', 'Multilingual interview practice', 'Priority customer support'] },
-    ],
-  },
+  { icon: ShieldCheck, title: 'Free Forever', description: 'Use every available feature without subscriptions, trials, upgrades, or paywalls.' },
 ]
 const faqs = [
   { question: 'How does ATS Optimizer work?', answer: 'ATS Optimizer compares your resume with a target job description, identifies matching and missing skills, highlights important keywords, and provides a compatibility analysis with practical recommendations.' },
   { question: 'Is my data safe and private?', answer: 'Uploaded files are converted to text in your browser, then the resume and job description are sent to the configured analysis service for processing. This web app does not persist uploaded documents. Processing and retention by the configured API should be confirmed in its deployment policy before sharing sensitive information.' },
-  { question: 'What is included in the Free plan?', answer: 'The Free plan includes unlimited analysis, keyword matching, missing-skill identification, compatibility scoring, and prompts that help you improve your resume.' },
-  { question: 'What extra features come with Premium?', answer: 'Premium starts with a 7-day free trial and is $50 USD per month after the trial. It provides deeper resume and job-description analysis, tailored resumes, AI-assisted rewriting based on your real experience, automatic job discovery across multiple sites, shortlisting of the opportunities that best match your skills, AI video mock interviews with Jack, and faster applications on supported job sites.' },
-  { question: 'How does the Premium free trial work?', answer: 'You can try Premium features free for 7 days. After the trial, Premium costs $50 USD per month.' },
-  { question: 'How do AI mock interviews with Jack work?', answer: 'This planned Premium feature will let you choose a leadership, ownership, behavioral, technical, or role-specific interview track. Jack will use the target job description to ask relevant questions and realistic follow-ups, then provide actionable feedback after the session. You will also be able to practice in a supported language. AI mock interviews are not currently active in this application.' },
-  { question: 'Does the browser extension support Quick Apply?', answer: 'The planned extension will help fill supported forms and attach an optimized resume, with a review step before submission. Availability will depend on each supported website; the extension is not yet connected.' },
-  { question: 'Can ATS Optimizer create a tailored resume for each job?', answer: 'The free workflow creates an AI-ready prompt grounded in your resume and target role. Direct, job-specific resume generation is a planned Premium feature and will use only verified experience, skills, and qualifications.' },
-  { question: 'How does the Deep X-Ray Scan work?', answer: 'It examines the resume and job description for relevant skills, important keywords, gaps, evidence mismatches, related terminology, and concrete improvement opportunities.' },
-  { question: 'Can I schedule automated job searches?', answer: 'Scheduled searches and qualification-based shortlisting are planned Premium capabilities. Automated job search is not currently active in this application.' },
+  { question: 'Is ATS Optimizer really free?', answer: 'Yes. Every available feature is free to use forever, with no subscription, trial, upgrade, or credit card required.' },
+  { question: 'What is included?', answer: 'You can scan your resume, review your compatibility score, compare matched and missing skills, inspect important keywords, and build a tailored improvement prompt.' },
 ]
 
 function Logo() {
@@ -61,10 +34,9 @@ function Logo() {
 function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
   return <>
     <div className="site-nav__links">
-      <a href="#how-it-works" onClick={onNavigate}>How It Works</a><a href="#features" onClick={onNavigate}>Features</a><a href="#pricing" onClick={onNavigate}>Pricing</a><a href="#faq" onClick={onNavigate}>FAQ</a>
+      <a href="#how-it-works" onClick={onNavigate}>How It Works</a><a href="#features" onClick={onNavigate}>Features</a><a href="#faq" onClick={onNavigate}>FAQ</a>
     </div>
     <div className="site-nav__actions">
-      <button className="nav-sign-in" type="button" disabled title="Sign in is not available yet">Sign In</button>
       <Link className="landing-button landing-button--primary" to={scannerPath} onClick={onNavigate}>Scan My Resume <ArrowRight aria-hidden="true" /></Link>
     </div>
   </>
@@ -165,28 +137,6 @@ function FeaturesSection() {
   return <section id="features" className="landing-section features" aria-labelledby="features-title"><div className="landing-container"><SectionHeading id="features-title" eyebrow="Key features" title="Everything You Need to Land More Interviews." /><div className="features-grid">{features.map((feature) => { const Icon = feature.icon; return <article className="feature-item" key={feature.title}><span className="icon-tile"><Icon aria-hidden="true" /></span><h3>{feature.title}</h3><p>{feature.description}</p></article> })}</div></div></section>
 }
 
-function PricingSection() {
-  return <section id="pricing" className="landing-section pricing" aria-labelledby="pricing-title"><div className="landing-container">
-    <SectionHeading id="pricing-title" eyebrow="Simple pricing" title="Start free. Go further when you’re ready." description="Get the essentials at no cost, or unlock a complete toolkit for tailoring, finding, and winning the right roles." />
-    <div className="pricing-grid">{plans.map((plan) => {
-      const isPremium = plan.name === 'Premium'
-      return <article className={`pricing-card${isPremium ? ' pricing-card--featured' : ''}`} key={plan.name}>
-        {isPremium ? <span className="pricing-card__badge"><Sparkles aria-hidden="true" /> 7 days free</span> : null}
-        <div className="pricing-card__top">
-          <div className="pricing-card__header"><p className="pricing-card__eyebrow">{plan.eyebrow}</p><h3>{plan.name}</h3><p>{plan.description}</p></div>
-          <div className="pricing-card__price-wrap">{plan.trial ? <><p className="pricing-card__trial-price"><span>$0</span><small>for 7 days</small></p><p className="pricing-card__renewal">Then {plan.price} {plan.cadence}</p></> : <p className="pricing-card__price"><span>{plan.price}</span><small>{plan.cadence}</small></p>}</div>
-        </div>
-        <div className="pricing-card__divider" />
-        <div className="pricing-card__features">
-          {plan.groups.map((group) => <div className="pricing-card__group" key={group.title}><h4>{group.title}</h4><ul>{group.features.map((feature) => <li key={feature}><CircleCheck aria-hidden="true" /><span>{feature}</span></li>)}</ul></div>)}
-        </div>
-        {plan.available ? <Link className={`landing-button pricing-card__action${isPremium ? ' landing-button--primary' : ' landing-button--outline'}`} to={scannerPath}>{plan.action} <ArrowRight aria-hidden="true" /></Link> : <button className="landing-button landing-button--outline pricing-card__action" type="button" disabled>{plan.action}</button>}
-      </article>
-    })}</div>
-    <p className="pricing-footnote"><ShieldCheck aria-hidden="true" /> Try Premium free for 7 days, then continue for $50 USD per month.</p>
-  </div></section>
-}
-
 function FAQItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   const [isOpen, setIsOpen] = useState(false)
   const id = `faq-${question.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
@@ -198,17 +148,13 @@ function FAQSection() {
 function CTASection() {
   return <section className="bottom-cta" aria-labelledby="cta-title"><div className="landing-container bottom-cta__inner"><span className="bottom-cta__icon"><ShieldCheck aria-hidden="true" /></span><div><h2 id="cta-title">Ready to improve your next application?</h2><p>Get an instant ATS analysis and personalized recommendations to stand out.</p></div><Link className="landing-button landing-button--primary landing-button--large" to={scannerPath}>Scan My Resume Free <ArrowRight aria-hidden="true" /></Link></div></section>
 }
-function FooterLinkGroup({ title, children }: { title: string; children: ReactNode }) { return <div className="footer-group"><h3>{title}</h3>{children}</div> }
 function Footer() {
   return <footer className="site-footer"><div className="landing-container site-footer__grid">
     <div className="footer-brand"><Logo /><p>Build a stronger resume and land more interviews.</p></div>
-    <FooterLinkGroup title="Product"><a href="#how-it-works">How It Works</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></FooterLinkGroup>
-    <FooterLinkGroup title="Resources"><span>Resume Tips</span><span>Interview Guides</span><span>Career Advice</span><span>Blog</span></FooterLinkGroup>
-    <FooterLinkGroup title="Company"><span>Contact</span><span>Privacy Policy</span><span>Terms of Service</span></FooterLinkGroup>
-    <div className="footer-newsletter"><h3>Stay Updated</h3><p>Get career tips and product updates.</p><div className="footer-newsletter__action"><button type="button" disabled title="Newsletter subscriptions are coming soon">Subscribe <ArrowRight aria-hidden="true" /></button></div></div>
-  </div><div className="landing-container site-footer__bottom"><p>© {new Date().getFullYear()} ATS Optimizer. All rights reserved.</p><p><span>Privacy</span><span>Terms</span><span>Cookies</span></p></div></footer>
+    <div className="footer-group"><h3>Product</h3><a href="#how-it-works">How It Works</a><a href="#features">Features</a><a href="#faq">FAQ</a></div>
+  </div><div className="landing-container site-footer__bottom"><p>© {new Date().getFullYear()} ATS Optimizer. All rights reserved.</p></div></footer>
 }
 
 export function LandingPage() {
-  return <div className="landing-page"><Header /><main><HeroSection /><HowItWorksSection /><FeaturesSection /><PricingSection /><FAQSection /><CTASection /></main><Footer /></div>
+  return <div className="landing-page"><Header /><main><HeroSection /><HowItWorksSection /><FeaturesSection /><FAQSection /><CTASection /></main><Footer /></div>
 }

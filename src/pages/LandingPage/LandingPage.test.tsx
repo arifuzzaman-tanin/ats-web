@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { LandingPage } from './LandingPage'
@@ -40,49 +40,29 @@ describe('LandingPage', () => {
     expect(document.body).not.toHaveStyle({ overflow: 'hidden' })
   })
 
-  it('shows the Premium monthly subscription and its featured benefits', () => {
+  it('presents every available feature as free forever', () => {
     renderLandingPage()
-    const trialLink = screen.getByRole('link', { name: /start 7-day free trial/i })
-    const premiumCard = trialLink.closest('article')
-    expect(premiumCard).not.toBeNull()
-    const premium = within(premiumCard as HTMLElement)
-    expect(premium.getByText(/7 days free/i)).toBeVisible()
-    expect(premium.getByText('$0')).toBeVisible()
-    expect(premium.getByText('for 7 days')).toBeVisible()
-    expect(premium.getByText('Then $50 USD per month')).toBeVisible()
-    expect(trialLink).toHaveAttribute('href', '/resume-scanner')
-    ;[
-      'Deep X-Ray analysis of your resume and job description',
-      'Automatic job discovery across multiple trusted sources',
-      'Best-fit opportunities ranked by your skills and preferences',
-      'Duplicate, expired, and suspicious job detection',
-      'A tailored resume and cover letter for every application',
-      'AI video mock interviews with Jack, tailored to the job description',
-      'Leadership and people-management interview practice',
-      'Ownership and accountability interview practice',
-      'Technical and role-specific interview practice',
-      'Behavioral and situational interview practice',
-      'Realistic follow-up questions and post-interview feedback',
-      'Multilingual interview practice',
-    ].forEach((feature) => expect(screen.getByText(feature)).toBeVisible())
+    expect(screen.getByRole('heading', { name: 'Free Forever' })).toBeVisible()
+    expect(screen.getByText(/without subscriptions, trials, upgrades, or paywalls/i)).toBeVisible()
+    expect(screen.queryByText(/premium/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/\$50/i)).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Pricing' })).not.toBeInTheDocument()
   })
 
-  it('explains the Premium trial terms in the FAQ', () => {
+  it('explains the free-forever commitment in the FAQ', () => {
     renderLandingPage()
-    const trigger = screen.getByRole('button', { name: 'How does the Premium free trial work?' })
+    const trigger = screen.getByRole('button', { name: 'Is ATS Optimizer really free?' })
     fireEvent.click(trigger)
-    expect(screen.getByText(/try Premium features free for 7 days/i)).toBeVisible()
-    expect(screen.getByText(/costs \$50 USD per month/i)).toBeVisible()
+    expect(screen.getByText(/free to use forever/i)).toBeVisible()
+    expect(screen.getByText(/no subscription, trial, upgrade, or credit card required/i)).toBeVisible()
   })
 
-  it('describes the planned AI mock interview feature accurately', () => {
+  it('does not show unavailable account, subscription, or footer links', () => {
     renderLandingPage()
-    expect(screen.getByRole('heading', { name: 'AI Mock Interviews with Jack' })).toBeVisible()
-
-    const trigger = screen.getByRole('button', { name: 'How do AI mock interviews with Jack work?' })
-    fireEvent.click(trigger)
-
-    expect(screen.getByText(/leadership, ownership, behavioral, technical, or role-specific interview track/i)).toBeVisible()
-    expect(screen.getByText(/AI mock interviews are not currently active/i)).toBeVisible()
+    expect(screen.queryByRole('button', { name: /sign in/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /subscribe/i })).not.toBeInTheDocument()
+    expect(screen.queryByText('Resume Tips')).not.toBeInTheDocument()
+    expect(screen.queryByText('Privacy Policy')).not.toBeInTheDocument()
+    expect(screen.queryByText('Cookies')).not.toBeInTheDocument()
   })
 })

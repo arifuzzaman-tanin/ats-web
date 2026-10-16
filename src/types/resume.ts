@@ -40,9 +40,3 @@ export interface ResumeOptimizationRequest {
   foundSkills: string[]
   includeQuantitativeAchievements: boolean
 }
-
-export interface ResumeOptimizationResult {
-  optimizedResume: string
-  docxDownloadUrl?: string
-  pdfDownloadUrl?: string
-}

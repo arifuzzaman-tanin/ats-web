@@ -14,7 +14,7 @@ interface ResumePromptProps {
 
 export function ResumePrompt({ result }: ResumePromptProps) {
   const quantitativeAchievementsHelp =
-    'Ask the AI to strengthen measurable results already in the resume and flag possible additions for manual verification.'
+    'Strengthen measurable results already in the resume and flag possible additions for manual verification.'
   const [copied, setCopied] = useState(false)
   const resumeText = useResumeStore((state) => state.resumeText)
   const jobDescription = useResumeStore((state) => state.jobDescription)
@@ -112,8 +112,8 @@ export function ResumePrompt({ result }: ResumePromptProps) {
           </span>
         </div>
         <p>
-          Paste it into ChatGPT, Claude, Gemini, or another AI assistant to create a tailored resume
-          with your relevant missing skills.
+          Use this prompt with your preferred writing tool to create a tailored resume while keeping
+          every claim grounded in your real experience.
         </p>
       </div>
     </div>

@@ -10,7 +10,6 @@ interface ResumeState {
   analysisResult?: ExtractSkillsResponse
   isScanAnimationVisible: boolean
   includeQuantitativeAchievements: boolean
-  optimizedResume?: string
   setResumeText: (resumeText: string) => void
   setJobDescription: (jobDescription: string) => void
   setUploadedFileName: (uploadedFileName?: string) => void
@@ -18,7 +17,6 @@ interface ResumeState {
   setAnalysisResult: (analysisResult: ExtractSkillsResponse) => void
   setScanAnimationVisible: (isVisible: boolean) => void
   setIncludeQuantitativeAchievements: (includeQuantitativeAchievements: boolean) => void
-  setOptimizedResume: (optimizedResume?: string) => void
   resetAnalysis: () => void
   resetAll: () => void
 }
@@ -31,7 +29,6 @@ const initialState = {
   analysisResult: undefined,
   isScanAnimationVisible: false,
   includeQuantitativeAchievements: true,
-  optimizedResume: undefined,
 }
 
 export const useResumeStore = create<ResumeState>()(
@@ -47,12 +44,10 @@ export const useResumeStore = create<ResumeState>()(
       setScanAnimationVisible: (isScanAnimationVisible) => set({ isScanAnimationVisible }),
       setIncludeQuantitativeAchievements: (includeQuantitativeAchievements) =>
         set({ includeQuantitativeAchievements }),
-      setOptimizedResume: (optimizedResume) => set({ optimizedResume }),
       resetAnalysis: () =>
         set({
           analysisResult: undefined,
           includeQuantitativeAchievements: true,
-          optimizedResume: undefined,
         }),
       resetAll: () => set({ ...initialState }),
     }),
@@ -66,7 +61,6 @@ export const useResumeStore = create<ResumeState>()(
         uploadedFileMetadata: state.uploadedFileMetadata,
         analysisResult: state.analysisResult,
         includeQuantitativeAchievements: state.includeQuantitativeAchievements,
-        optimizedResume: state.optimizedResume,
       }),
     },
   ),
