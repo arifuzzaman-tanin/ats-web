@@ -1,9 +1,8 @@
-import { ArrowLeft, ArrowUpRight, Check, Clipboard, Code2, Menu, Package, X } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, Check, ChevronRight, Clipboard, Menu, Package, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const testPypiUrl = 'https://test.pypi.org/project/ats-optimizer/'
-const githubUrl = 'https://github.com/arifuzzaman-tanin/ats-optimizer-backend'
 
 const sections = [
   ['overview', 'Overview'],
@@ -57,7 +56,7 @@ export function DocumentationPage() {
   return <div className="docs-page">
     <header className="docs-header"><div className="docs-container docs-header__inner">
       <Logo /><span className="docs-header__divider" /><span className="docs-header__label">Documentation</span>
-      <nav className="docs-header__links" aria-label="Documentation links"><Link to="/"><ArrowLeft aria-hidden="true" /> Website</Link><a href={githubUrl} target="_blank" rel="noreferrer"><Code2 aria-hidden="true" /> GitHub</a><a className="docs-header__package" href={testPypiUrl} target="_blank" rel="noreferrer"><Package aria-hidden="true" /> TestPyPI <ArrowUpRight aria-hidden="true" /></a></nav>
+      <nav className="docs-header__links" aria-label="Documentation links"><Link to="/"><ArrowLeft aria-hidden="true" /> Website</Link><a className="docs-header__package" href={testPypiUrl} target="_blank" rel="noreferrer"><Package aria-hidden="true" /> TestPyPI <ArrowUpRight aria-hidden="true" /></a></nav>
       <button className="docs-menu-button" type="button" aria-label="Open documentation menu" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}><Menu aria-hidden="true" /></button>
     </div></header>
 
@@ -74,26 +73,29 @@ export function DocumentationPage() {
         <section id="overview" className="docs-hero">
           <div className="docs-badge"><Package aria-hidden="true" /> ats-optimizer <span>v0.1.0</span></div>
           <h1 aria-label="ATS Optimizer Python library">ATS Optimizer<br /><span>Python library</span></h1>
-          <p className="docs-lead">Deterministic resume-to-job skill coverage for any Python project. Analyze text or documents locally—without an API key, database, or AI model.</p>
+          <p className="docs-lead">Deterministic resume-to-job skill coverage for any Python project. Analyze text or documents locally without an API key, database, or AI model.</p>
           <div className="docs-callout docs-callout--info"><strong>What the score means</strong><p>The score measures recognized job skills that also appear in the resume. It is skill coverage, not a real ATS hiring score or a judgment of candidate quality.</p></div>
         </section>
 
-        <section id="installation" className="docs-section"><p className="docs-kicker">01 — Installation</p><h2>Install the package</h2><p>This alpha release is currently published on TestPyPI. Install the base package for text and Markdown inputs:</p><CodeBlock language="terminal">{installCommand}</CodeBlock><p>To analyze text-based PDF files, install the optional PDF dependency:</p><CodeBlock language="terminal">{pdfInstallCommand}</CodeBlock><p className="docs-note">Python 3.10 or newer is required. Scanned PDFs must be processed with OCR before analysis.</p></section>
+        <section id="installation" className="docs-section"><p className="docs-kicker">01 <ChevronRight aria-hidden="true" /> Installation</p><h2>Install the package</h2><p>This alpha release is currently published on TestPyPI. Install the base package for text and Markdown inputs:</p><CodeBlock language="terminal">{installCommand}</CodeBlock><p>To analyze text-based PDF files, install the optional PDF dependency:</p><CodeBlock language="terminal">{pdfInstallCommand}</CodeBlock><p className="docs-note">Python 3.10 or newer is required. Scanned PDFs must be processed with OCR before analysis.</p></section>
 
-        <section id="quick-start" className="docs-section"><p className="docs-kicker">02 — Quick start</p><h2>Analyze two strings</h2><p>Create an optimizer and pass resume text plus a job description to <code>analyze()</code>.</p><CodeBlock>{`from ats_optimizer import ATSOptimizer
+        <section id="quick-start" className="docs-section"><p className="docs-kicker">02 <ChevronRight aria-hidden="true" /> Quick start</p><h2>Analyze two strings</h2><p>Create an optimizer and pass resume text plus a job description to <code>analyze()</code>.</p><CodeBlock>{`from ats_optimizer import ATSOptimizer
 
 optimizer = ATSOptimizer()
 
 result = optimizer.analyze(
-    resume="Python developer with PostgreSQL experience",
-    job_description="Python, SQL, PostgreSQL, and Docker required",
+    resume="""Backend developer with three years of experience building Python and FastAPI services.
+    Skilled in PostgreSQL, REST APIs, Docker, Git, and automated testing.""",
+    job_description="""Seeking a Python Developer with experience in Python,
+    FastAPI, SQL, and REST APIs. You will build backend services and
+    integrate databases. Docker, Git, and automated testing are preferred.""",
 )
 
-print(result.score)           # 50
-print(result.matched_skills)  # ('postgresql', 'python')
-print(result.missing_skills)  # ('docker', 'sql')`}</CodeBlock><p>The library uses a curated skill catalogue with aliases and contextual matching. Analysis is local and deterministic: the same inputs and package version produce the same result.</p></section>
+print(result.score)
+print(result.matched_skills)
+print(result.missing_skills)`}</CodeBlock><p>The library uses a curated skill catalogue with aliases and contextual matching. Analysis is local and deterministic: the same inputs and package version produce the same result.</p></section>
 
-        <section id="file-inputs" className="docs-section"><p className="docs-kicker">03 — File inputs</p><h2>Analyze local documents</h2><p>Pass <code>pathlib.Path</code> objects when your inputs are files. Plain strings are always interpreted as document text, not filenames.</p><CodeBlock>{`from pathlib import Path
+        <section id="file-inputs" className="docs-section"><p className="docs-kicker">03 <ChevronRight aria-hidden="true" /> File inputs</p><h2>Analyze local documents</h2><p>Pass <code>pathlib.Path</code> objects when your inputs are files. Plain strings are always interpreted as document text, not filenames.</p><CodeBlock>{`from pathlib import Path
 from ats_optimizer import ATSOptimizer
 
 result = ATSOptimizer().analyze(
@@ -101,19 +103,19 @@ result = ATSOptimizer().analyze(
     job_description=Path("job-description.txt"),
 )`}</CodeBlock><div className="docs-support-grid"><div><strong>.txt</strong><span>Built in</span></div><div><strong>.md</strong><span>Built in</span></div><div><strong>.pdf</strong><span>Requires [pdf]</span></div><div className="docs-support-grid__muted"><strong>.docx</strong><span>Not supported yet</span></div></div></section>
 
-        <section id="result-object" className="docs-section"><p className="docs-kicker">04 — Result object</p><h2>Work with structured results</h2><p><code>analyze()</code> returns an immutable <code>AnalysisResult</code>. Its main properties are:</p><div className="docs-table-wrap"><table><thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>score</code></td><td><code>int</code></td><td>Recognized skill coverage from 0–100</td></tr><tr><td><code>status</code></td><td><code>str</code></td><td>Display band for the coverage score</td></tr><tr><td><code>skills</code></td><td><code>tuple[SkillMatch, ...]</code></td><td>Detailed evidence for every recognized job skill</td></tr><tr><td><code>matched_skills</code></td><td><code>tuple[str, ...]</code></td><td>Canonical skills evidenced in both inputs</td></tr><tr><td><code>missing_skills</code></td><td><code>tuple[str, ...]</code></td><td>Job skills without resume evidence</td></tr><tr><td><code>warning</code></td><td><code>str | None</code></td><td>Present when no recognized job skills were found</td></tr></tbody></table></div><h3>Serialize to JSON</h3><CodeBlock>{`import json
+        <section id="result-object" className="docs-section"><p className="docs-kicker">04 <ChevronRight aria-hidden="true" /> Result object</p><h2>Work with structured results</h2><p><code>analyze()</code> returns an immutable <code>AnalysisResult</code>. Its main properties are:</p><div className="docs-table-wrap"><table><thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>score</code></td><td><code>int</code></td><td>Recognized skill coverage from 0 to 100</td></tr><tr><td><code>status</code></td><td><code>str</code></td><td>Display band for the coverage score</td></tr><tr><td><code>skills</code></td><td><code>tuple[SkillMatch, ...]</code></td><td>Detailed evidence for every recognized job skill</td></tr><tr><td><code>matched_skills</code></td><td><code>tuple[str, ...]</code></td><td>Canonical skills evidenced in both inputs</td></tr><tr><td><code>missing_skills</code></td><td><code>tuple[str, ...]</code></td><td>Job skills without resume evidence</td></tr><tr><td><code>warning</code></td><td><code>str | None</code></td><td>Present when no recognized job skills were found</td></tr></tbody></table></div><h3>Serialize to JSON</h3><CodeBlock>{`import json
 
 payload = result.to_dict()
 print(json.dumps(payload, indent=2))`}</CodeBlock></section>
 
-        <section id="error-handling" className="docs-section"><p className="docs-kicker">05 — Error handling</p><h2>Catch package errors</h2><p>Catch <code>ATSOptimizerError</code> for any package-specific failure, or import a narrower exception when your application needs different recovery behavior.</p><CodeBlock>{`from ats_optimizer import ATSOptimizer, ATSOptimizerError
+        <section id="error-handling" className="docs-section"><p className="docs-kicker">05 <ChevronRight aria-hidden="true" /> Error handling</p><h2>Catch package errors</h2><p>Catch <code>ATSOptimizerError</code> for any package-specific failure, or import a narrower exception when your application needs different recovery behavior.</p><CodeBlock>{`from ats_optimizer import ATSOptimizer, ATSOptimizerError
 
 try:
     result = ATSOptimizer().analyze("My resume", "The job description")
 except ATSOptimizerError as error:
     print(f"Analysis failed: {error}")`}</CodeBlock><p className="docs-note">Specific exceptions include <code>InvalidInputError</code>, <code>UnsupportedFileTypeError</code>, <code>MissingOptionalDependencyError</code>, and <code>DocumentReadError</code>.</p></section>
 
-        <section id="web-frameworks" className="docs-section"><p className="docs-kicker">06 — Integration</p><h2>Use it in a web API</h2><p>Call the analyzer inside a Flask, FastAPI, or Django route and return <code>result.to_dict()</code> as JSON.</p><CodeBlock>{`from fastapi import FastAPI
+        <section id="web-frameworks" className="docs-section"><p className="docs-kicker">06 <ChevronRight aria-hidden="true" /> Integration</p><h2>Use it in a web API</h2><p>Call the analyzer inside a Flask, FastAPI, or Django route and return <code>result.to_dict()</code> as JSON.</p><CodeBlock>{`from fastapi import FastAPI
 from pydantic import BaseModel
 from ats_optimizer import ATSOptimizer
 
@@ -132,9 +134,9 @@ def analyze(payload: AnalysisRequest):
     )
     return result.to_dict()`}</CodeBlock></section>
 
-        <section id="limitations" className="docs-section"><p className="docs-kicker">07 — Know the boundaries</p><h2>Important limitations</h2><ul className="docs-limitations"><li>Unknown skills are ignored until they are added to the catalogue.</li><li>A missing skill means it was not recognized in the resume text.</li><li>The package does not judge candidate quality or predict hiring outcomes.</li><li>It does not generate resume rewrites or recommendations.</li><li>DOCX and OCR for scanned PDFs are not currently supported.</li></ul><div className="docs-callout"><strong>Free for any project</strong><p>The package is released into the public domain under the Unlicense. You may use, copy, modify, publish, sell, or distribute it for any purpose, without warranty.</p></div></section>
+        <section id="limitations" className="docs-section"><p className="docs-kicker">07 <ChevronRight aria-hidden="true" /> Know the boundaries</p><h2>Important limitations</h2><ul className="docs-limitations"><li>Unknown skills are ignored until they are added to the catalogue.</li><li>A missing skill means it was not recognized in the resume text.</li><li>The package does not judge candidate quality or predict hiring outcomes.</li><li>It does not generate resume rewrites or recommendations.</li><li>DOCX and OCR for scanned PDFs are not currently supported.</li></ul><div className="docs-callout"><strong>Free for any project</strong><p>The package is released into the public domain under the Unlicense. You may use, copy, modify, publish, sell, or distribute it for any purpose, without warranty.</p></div></section>
 
-        <footer className="docs-footer"><div><strong>Ready to integrate?</strong><p>Start with the quick-start example or inspect the source on GitHub.</p></div><a href={testPypiUrl} target="_blank" rel="noreferrer">Open TestPyPI <ArrowUpRight aria-hidden="true" /></a></footer>
+        <footer className="docs-footer"><div><strong>Ready to integrate?</strong><p>Start with the quick-start example and add ATS analysis to your project.</p></div><a href={testPypiUrl} target="_blank" rel="noreferrer">Open TestPyPI <ArrowUpRight aria-hidden="true" /></a></footer>
       </main>
     </div>
   </div>
