@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LockKeyhole } from 'lucide-react'
+import { ArrowLeft, LockKeyhole } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { Card } from '../../components/ui/Card/Card'
 import { AccessKeyModal } from '../../features/access-key/AccessKeyModal'
 import { requestFreeAccessKey } from '../../features/access-key/accessKeyApi'
@@ -113,10 +114,17 @@ export function ResumeScannerPage() {
 
   return (
     <main className="scanner-page">
-      <header className="page-heading">
-        <h1>Check Your Resume Against a Job Description</h1>
-        <span className="page-heading__accent" />
-      </header>
+      <div className="scanner-header">
+        <Link className="button button--ghost scanner-home-link" to="/">
+          <ArrowLeft size={22} aria-hidden="true" />
+          <span>Back to home</span>
+        </Link>
+
+        <header className="scanner-header__heading">
+          <h1>Check Your Resume Against a Job Description</h1>
+          <p>Upload your resume and add the job description to see how well they match.</p>
+        </header>
+      </div>
 
       <form className="scanner-form" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Card className="scanner-card">

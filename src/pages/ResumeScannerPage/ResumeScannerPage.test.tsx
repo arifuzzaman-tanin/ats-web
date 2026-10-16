@@ -33,6 +33,15 @@ describe('resume scanner access-key flow', () => {
     useResumeStore.getState().setJobDescription('Looking for a software developer')
   })
 
+  it('offers a link back to the home page', () => {
+    renderScanner()
+
+    expect(screen.getByRole('link', { name: 'Back to home' })).toHaveAttribute('href', '/')
+    expect(
+      screen.getByText('Upload your resume and add the job description to see how well they match.'),
+    ).toBeInTheDocument()
+  })
+
   it('waits for Continue and reopens the modal when the response body rejects the key', async () => {
     const post = vi.spyOn(apiClient, 'post').mockResolvedValueOnce({
       data: { error: 'Access key is required' },
