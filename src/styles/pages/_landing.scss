@@ -70,6 +70,31 @@ html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 .feature-item h3 { font-size: 1rem; line-height: 1.35; }
 .feature-item p { margin-top: 8px; color: var(--landing-muted); font-size: .88rem; }
 
+.developers { color: #fff; background: #081440; }
+.developers__grid { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(48px,7vw,90px); }
+.developers__content .section-eyebrow { color: #67b1ff; }
+.developers__content h2 { max-width: 540px; font-size: clamp(2.15rem,3.8vw,3.45rem); line-height: 1.07; letter-spacing: -.045em; }
+.developers__content > p:not(.section-eyebrow) { max-width: 550px; margin-top: 18px; color: #aabbdc; font-size: .97rem; }
+.developers__facts { margin-top: 23px; display: flex; flex-wrap: wrap; gap: 10px; }
+.developers__facts span { border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: 7px 10px; display: inline-flex; align-items: center; gap: 6px; color: #c5d6f3; background: rgba(255,255,255,.04); font-size: .69rem; font-weight: 700; }
+.developers__facts svg { width: 14px; height: 14px; color: #6bb5ff; }
+.developers__actions { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 11px; }
+.developers .landing-button--outline { color: #e8f1ff; border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.05); }
+.developers .landing-button--outline:hover { border-color: rgba(255,255,255,.48); box-shadow: none; }
+.developers__terminal { border: 1px solid rgba(128,171,229,.23); border-radius: 14px; overflow: hidden; background: #050c24; box-shadow: 0 28px 60px rgba(0,0,0,.25); }
+.developers__terminal-bar { min-height: 44px; border-bottom: 1px solid rgba(255,255,255,.08); padding: 0 14px; display: flex; align-items: center; gap: 7px; background: #0e1938; }
+.developers__terminal-bar > span { width: 8px; height: 8px; border-radius: 50%; background: #536588; }
+.developers__terminal-bar > span:first-child { background: #ff6b6b; }
+.developers__terminal-bar > span:nth-child(2) { background: #ffd15c; }
+.developers__terminal-bar > span:nth-child(3) { background: #4dd599; }
+.developers__terminal-bar p { margin-left: auto; display: flex; align-items: center; gap: 6px; color: #8397bd; font-size: .67rem; }
+.developers__terminal-bar svg { width: 13px; height: 13px; }
+.developers__terminal pre { margin: 0; padding: 25px 26px 28px; overflow-x: auto; color: #d4e3fb; font-family: ui-monospace,SFMono-Regular,Consolas,monospace; font-size: clamp(.68rem,1.2vw,.8rem); line-height: 1.72; }
+.code-comment { color: #7083a8; }
+.code-command { color: #7bc2ff; }
+.code-keyword { color: #c69bff; }
+.code-string { color: #86dfb1; }
+
 
 .faq { position: relative; background: linear-gradient(180deg,#fff 0%,#f8fbff 100%); }
 .faq::before { content: ''; position: absolute; top: 60px; left: -150px; width: 340px; height: 340px; border-radius: 50%; background: rgba(8,119,242,.055); filter: blur(2px); pointer-events: none; }
@@ -153,6 +178,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   .feature-item:nth-child(2n) { border-right: 0; }
   .feature-item:nth-child(2n+1) { padding-left: 0; }
   .faq__layout { grid-template-columns: 1fr; gap: 34px; }
+  .developers__grid { grid-template-columns: 1fr; }
   .faq__intro { position: static; text-align: center; }
   .faq__intro h2, .faq__description, .faq__support { margin-inline: auto; }
   .faq__support { text-align: left; }
@@ -175,6 +201,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 84px; }
   .landing-section { padding-block: 64px; }
   .section-heading { margin-bottom: 32px; }
   .features-grid { grid-template-columns: 1fr; gap: 28px; }
+  .developers__actions { display: grid; }
+  .developers__actions .landing-button { width: 100%; }
+  .developers__terminal { margin-inline: -8px; }
+  .developers__terminal pre { padding: 20px 18px 23px; font-size: .66rem; }
   .feature-item, .feature-item:nth-child(3n+1), .feature-item:nth-child(3n), .feature-item:nth-child(2n+1) { padding: 0; border: 0; display: grid; grid-template-columns: 56px 1fr; column-gap: 16px; }
   .feature-item .icon-tile { width: 56px; height: 56px; grid-row: 1 / 3; }
   .feature-item h3 { align-self: end; }

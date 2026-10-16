@@ -1,7 +1,7 @@
 import {
-  ArrowRight, BarChart3, ChevronDown, FileSearch, FileUp,
+  ArrowRight, BarChart3, Box, ChevronDown, Code2, FileSearch, FileUp,
   HelpCircle, Lightbulb, LockKeyhole, Menu, PencilLine, Play,
-  ShieldCheck, Sparkles, X,
+  ShieldCheck, Sparkles, Terminal, X,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -34,7 +34,7 @@ function Logo() {
 function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
   return <>
     <div className="site-nav__links">
-      <a href="#how-it-works" onClick={onNavigate}>How It Works</a><a href="#features" onClick={onNavigate}>Features</a><a href="#faq" onClick={onNavigate}>FAQ</a>
+      <a href="#how-it-works" onClick={onNavigate}>How It Works</a><a href="#features" onClick={onNavigate}>Features</a><a href="#developers" onClick={onNavigate}>Developers</a><Link to="/docs" onClick={onNavigate}>Docs</Link><a href="#faq" onClick={onNavigate}>FAQ</a>
     </div>
     <div className="site-nav__actions">
       <Link className="landing-button landing-button--primary" to={scannerPath} onClick={onNavigate}>Scan My Resume <ArrowRight aria-hidden="true" /></Link>
@@ -137,6 +137,29 @@ function FeaturesSection() {
   return <section id="features" className="landing-section features" aria-labelledby="features-title"><div className="landing-container"><SectionHeading id="features-title" eyebrow="Key features" title="Everything You Need to Land More Interviews." /><div className="features-grid">{features.map((feature) => { const Icon = feature.icon; return <article className="feature-item" key={feature.title}><span className="icon-tile"><Icon aria-hidden="true" /></span><h3>{feature.title}</h3><p>{feature.description}</p></article> })}</div></div></section>
 }
 
+function DevelopersSection() {
+  return <section id="developers" className="landing-section developers" aria-labelledby="developers-title"><div className="landing-container developers__grid">
+    <div className="developers__content">
+      <p className="section-eyebrow">Open Python library</p>
+      <h2 id="developers-title">Bring ATS skill matching into any project.</h2>
+      <p>Use the same deterministic skill-coverage engine in scripts, APIs, internal tools, or recruiting products. It runs locally with no API key, database, or AI model.</p>
+      <div className="developers__facts">
+        <span><Box aria-hidden="true" /> v0.1.0</span>
+        <span><Code2 aria-hidden="true" /> Python 3.10+</span>
+        <span><ShieldCheck aria-hidden="true" /> Unlicense</span>
+      </div>
+      <div className="developers__actions">
+        <Link className="landing-button landing-button--primary" to="/docs">Read the documentation <ArrowRight aria-hidden="true" /></Link>
+        <a className="landing-button landing-button--outline" href="https://test.pypi.org/project/ats-optimizer/" target="_blank" rel="noreferrer">View on TestPyPI</a>
+      </div>
+    </div>
+    <div className="developers__terminal" aria-label="Installation and Python usage example">
+      <div className="developers__terminal-bar"><span /><span /><span /><p><Terminal aria-hidden="true" /> Quick start</p></div>
+      <pre><code><span className="code-comment"># Install from TestPyPI</span>{'\n'}<span className="code-command">pip install --index-url https://test.pypi.org/simple/ ats-optimizer</span>{'\n\n'}<span className="code-keyword">from</span> ats_optimizer <span className="code-keyword">import</span> ATSOptimizer{'\n\n'}result = ATSOptimizer().analyze({'\n'}    resume=<span className="code-string">"Python and PostgreSQL"</span>,{'\n'}    job_description=<span className="code-string">"Python, SQL, PostgreSQL, Docker"</span>,{'\n'}){'\n\n'}<span className="code-keyword">print</span>(result.score)  <span className="code-comment"># 50</span></code></pre>
+    </div>
+  </div></section>
+}
+
 function FAQItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   const [isOpen, setIsOpen] = useState(false)
   const id = `faq-${question.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
@@ -151,10 +174,10 @@ function CTASection() {
 function Footer() {
   return <footer className="site-footer"><div className="landing-container site-footer__grid">
     <div className="footer-brand"><Logo /><p>Build a stronger resume and land more interviews.</p></div>
-    <div className="footer-group"><h3>Product</h3><a href="#how-it-works">How It Works</a><a href="#features">Features</a><a href="#faq">FAQ</a></div>
+    <div className="footer-group"><h3>Product</h3><a href="#how-it-works">How It Works</a><a href="#features">Features</a><Link to="/docs">Python Docs</Link><a href="#faq">FAQ</a></div>
   </div><div className="landing-container site-footer__bottom"><p>© {new Date().getFullYear()} ATS Optimizer. All rights reserved.</p></div></footer>
 }
 
 export function LandingPage() {
-  return <div className="landing-page"><Header /><main><HeroSection /><HowItWorksSection /><FeaturesSection /><FAQSection /><CTASection /></main><Footer /></div>
+  return <div className="landing-page"><Header /><main><HeroSection /><HowItWorksSection /><FeaturesSection /><DevelopersSection /><FAQSection /><CTASection /></main><Footer /></div>
 }

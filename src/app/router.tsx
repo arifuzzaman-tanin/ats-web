@@ -9,6 +9,9 @@ const ResumeAnalysisPage = lazy(() =>
 const ResumeScannerPage = lazy(() =>
   import('../pages/ResumeScannerPage/ResumeScannerPage').then((module) => ({ default: module.ResumeScannerPage })),
 )
+const DocumentationPage = lazy(() =>
+  import('../pages/DocumentationPage/DocumentationPage').then((module) => ({ default: module.DocumentationPage })),
+)
 
 function AnalysisRoute() {
   const analysisResult = useResumeStore((state) => state.analysisResult)
@@ -20,6 +23,7 @@ export function AppRouter() {
     <Suspense fallback={<main className="route-loading" role="status">Loading…</main>}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/docs" element={<DocumentationPage />} />
         <Route path="/resume-scanner" element={<ResumeScannerPage />} />
         <Route path="/analysis" element={<AnalysisRoute />} />
         <Route path="*" element={<Navigate to="/" replace />} />
