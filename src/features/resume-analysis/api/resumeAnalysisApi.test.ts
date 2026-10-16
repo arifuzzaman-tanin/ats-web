@@ -1,22 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { apiClient } from '../../../services/apiClient'
-import {
-  removeAccessKeyCookie,
-  setAccessKeyCookie,
-} from '../../access-key/accessKeyCookie'
-import {
-  AccessKeyValidationError,
-  extractSkills,
-  normalizeExtractSkillsResponse,
-} from './resumeAnalysisApi'
+import { extractSkills, normalizeExtractSkillsResponse } from './resumeAnalysisApi'
 import { summarizeSkills } from '../utils/skillUtils'
 
 describe('resumeAnalysisApi transformation', () => {
-  beforeEach(() => {
-    vi.restoreAllMocks()
-    removeAccessKeyCookie()
-  })
-
   it('normalizes response and derives missing/found skills', () => {
     const response = normalizeExtractSkillsResponse({
       comma_separated_missing_skills: 'docker',
@@ -38,18 +25,7 @@ describe('resumeAnalysisApi transformation', () => {
     expect(summary.foundSkillNames).toEqual(['python'])
   })
 
-  it('treats an access-key error in a successful JSON response as validation failure', async () => {
-    vi.spyOn(apiClient, 'post').mockResolvedValueOnce({
-      data: { error: 'Access key is required' },
-    })
-
-    await expect(
-      extractSkills({ resume: 'Resume', job_description: 'Job' }),
-    ).rejects.toBeInstanceOf(AccessKeyValidationError)
-  })
-
-  it('includes the saved access key in the extract-skills request body', async () => {
-    setAccessKeyCookie('ARIF_100')
+  it('sends only the resume and job description in the request body', async () => {
     const post = vi.spyOn(apiClient, 'post').mockResolvedValueOnce({
       data: {
         comma_separated_missing_skills: '',
@@ -67,29 +43,6 @@ describe('resumeAnalysisApi transformation', () => {
     expect(post).toHaveBeenCalledWith('/extract_skills', {
       resume: 'Resume',
       job_description: 'Job',
-      access_key: 'ARIF_100',
     })
-  })
-
-  it.each([400, 401])('treats HTTP %i as an access-key validation failure', async (status) => {
-    vi.spyOn(apiClient, 'post').mockRejectedValueOnce({
-      isAxiosError: true,
-      response: { status, data: {} },
-    })
-
-    await expect(
-      extractSkills({ resume: 'Resume', job_description: 'Job' }),
-    ).rejects.toBeInstanceOf(AccessKeyValidationError)
-  })
-
-  it('matches an access-key error body even on another HTTP status', async () => {
-    vi.spyOn(apiClient, 'post').mockRejectedValueOnce({
-      isAxiosError: true,
-      response: { status: 500, data: { error: 'Invalid access key' } },
-    })
-
-    await expect(
-      extractSkills({ resume: 'Resume', job_description: 'Job' }),
-    ).rejects.toBeInstanceOf(AccessKeyValidationError)
   })
 })

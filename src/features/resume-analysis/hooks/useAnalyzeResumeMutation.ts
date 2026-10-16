@@ -2,16 +2,9 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { useResumeStore } from '../../../store/resumeStore'
 import type { ExtractSkillsRequest, ExtractSkillsResponse } from '../../../types/resume'
-import {
-  extractSkills,
-  isAccessKeyValidationError,
-} from '../api/resumeAnalysisApi'
+import { extractSkills } from '../api/resumeAnalysisApi'
 
-interface UseAnalyzeResumeMutationOptions {
-  onAccessKeyFailure?: () => void
-}
-
-export function useAnalyzeResumeMutation(options: UseAnalyzeResumeMutationOptions = {}) {
+export function useAnalyzeResumeMutation() {
   const navigate = useNavigate()
   const setAnalysisResult = useResumeStore((state) => state.setAnalysisResult)
   const setScanAnimationVisible = useResumeStore((state) => state.setScanAnimationVisible)
@@ -23,9 +16,8 @@ export function useAnalyzeResumeMutation(options: UseAnalyzeResumeMutationOption
       setAnalysisResult(result)
       navigate('/analysis')
     },
-    onError: (error) => {
+    onError: () => {
       setScanAnimationVisible(false)
-      if (isAccessKeyValidationError(error)) options.onAccessKeyFailure?.()
     },
   })
 }

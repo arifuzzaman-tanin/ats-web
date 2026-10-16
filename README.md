@@ -57,7 +57,6 @@ Content-Type: application/json
 
 ```json
 {
-  "access_key": "ARIF_100",
   "job_description": "We need a Python developer with Flask and Docker.",
   "resume": "I am a Python developer with Flask experience."
 }
